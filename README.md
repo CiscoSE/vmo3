@@ -15,7 +15,7 @@ out of the office, even if the person did not leave a voice mail.
 
 ![LOGIC Workflow][logo]
 
-[logo]: https://github.com/clintmann/vmo3/blob/master/images/vmo3_image.gif "Workflow"
+[logo]: https://github.com/clintmann/vmo3/blob/master/images/vmo3_concept_image.gif "Workflow"
 
 
 ### Cisco Products Technologies/ Services
