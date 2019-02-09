@@ -13,6 +13,10 @@ Cisco Unified Communication Manager (CUCM). Users can set their OoO alert in ema
 voice mail. They will also receive a daily listing of inbound calls, so they can see who called while they were 
 out of the office, even if the person did not leave a voice mail. 
 
+![LOGIC Workflow][logo]
+
+[logo]: https://github.com/clintmann/vmo3/blob/master/vmo3-image/.gif "Workflow"
+
 
 ### Cisco Products Technologies/ Services
 
