@@ -27,6 +27,7 @@ Our solution will leverage the following Cisco technologies
 
 ## Team Members
 
+* Chris Bogdon <cbogdon@cisco.com> - Trans PNC Enterprise Account
 * Marty Sloan <masloan@cisco.com> - Midwest Atlantic Enterprise
 * Clint Mann <climann2@cisco.com> - PA Liberty Select
 
