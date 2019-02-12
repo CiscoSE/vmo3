@@ -107,3 +107,4 @@ venv.bak/
 .idea.bak/
 .idea/vcs.xml.idea
 .github
+.idea/
