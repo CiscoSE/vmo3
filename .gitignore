@@ -105,4 +105,4 @@ venv.bak/
 .mypy_cache/
 
 .idea.bak/
-.idea/vcs.xml
+.idea/vcs.xml.idea
