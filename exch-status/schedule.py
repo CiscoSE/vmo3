@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     # Schedule User Status Check
     scheduler.add_job(usr_status, 'interval', seconds=5,
-                      args=[tkn])
+                      args=[tkn, mediator_url])
     usr_status(tkn, mediator_url)
 
     # Start Scheduler
