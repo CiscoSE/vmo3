@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="home">
+      <h2>Main Menu</h2>
+
+  </div>
+
+    <div class="selector">
+
+        <br>
+        <li><a href = "/load-users">Synchronize the User Table</a></li>
+        <li><a href = "/list-users">List the Users</a></li>
+        <li><a href = "/clear-tables">Clear the User Table</a></li>
+
+        <br>
+
+
+        <table border = 1>
+        <tr>
+            <th>Alias</th>
+            <th>Extension</th>
+            <th>Alternate Greeting</th>
+            <th>VMO Enabled</th>
+            <th>Enable/Disable VMO</th>
+        </tr>
+
+
+         {% for row in rows %}
+            <tr>
+               <td>{{row["Alias"]}}</td>
+                <td>{{row["Extension"]}}</td>
+                <td>{{row["AlternateGreetingEnabled"]}}</td>
+                <td>{{row["Active"]}}</td>
+			    <td class="text-right">
+				    <div class="row">
+					    <a class="btn" href="{{ url_for('toggle_status',emailid=row['Alias']) }}">Toggle VMO</a>
+
+				    </div>
+			    </td>
+
+
+            </tr>
+         {% endfor %}
+      </table>
+    </div>
+{% endblock %}

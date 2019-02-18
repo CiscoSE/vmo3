@@ -1,0 +1,6 @@
+[vmo-mediator]
+listen-ip: {Insert IP to Listen on}
+listen-port: {Insert Port to Listen on}
+vm-interface: {Insert Voicemail Interface IP:Port Module}
+mail-interface: {Insert Mail Interface IP:Port Module}
+webdebug: False
