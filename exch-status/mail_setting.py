@@ -6,8 +6,9 @@ Author: Clint Mann
 
 Description:
 This is the token microservice, it will
- - check the automaticRepliesSetting for the user mailbox
+ + check the automaticRepliesSetting for the user mailbox
 """
+
 import sys
 import requests
 
@@ -15,7 +16,7 @@ import requests
 def auto_reply(tkn, email_addr):
     # for loop here - loop through email_addr list - and make a GET request for each
     # If status is enabled - add to status list - this list will be sent back to the
-    # app Chris created
+    # Mediator APP
 
     mailbox_url = "https://graph.microsoft.com/v1.0/users/" + email_addr + str(
         "/mailboxSettings/automaticRepliesSetting")

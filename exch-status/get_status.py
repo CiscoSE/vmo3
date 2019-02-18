@@ -6,32 +6,17 @@ Author: Clint Mann
 
 Description:
 This is the user status microservice, it will
- - reach out out to mailsetting.py to check the
+ + reach out out to mailsetting.py to check the
  automaticRepliesSetting for the user mailbox
- - it will then send the results to VMO3 Hub microservice
+ + it will then send the results to VMO3 Hub microservice
 """
-import requests
+
 from mail_setting import auto_reply
 from post_api import mediator_post
 
 
-def usr_status(token):
-    db = {
-        "usrs": [
-            {
-                "email": "clint@karmatek.io",
-                "monitor": True
-            },
-            {
-                "email": "marty@karmatek.io",
-                "monitor": True
-            },
-            {
-                "email": "chris@karmatek.io",
-                "monitor": False
-            }
-        ]
-    }
+def usr_status(token, med_url ):
+
 
     email_status = {}
 
@@ -83,22 +68,9 @@ def usr_status(token):
     # mailboxsettings(token, email_addr_list)
 
     # POST TO API
+    print('email status ', email_status)
 
-    # mediator_post()
-    print(email_status)
-
-    hub_url = "http://<ip-address>/api/setstatus"
-
-    payload = "{\n\t\"email\":\"emailhere\",\n\t\"status\":\"True\"\n\t\n}"
-
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    response = requests.post(hub_url, data=payload, headers=headers)
-
-    print(response.text)
-
+    mediator_post(med_url, email_status)
 
 
 
