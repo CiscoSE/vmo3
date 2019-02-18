@@ -12,6 +12,7 @@ This is the user status microservice, it will
 """
 import requests
 from mail_setting import auto_reply
+from post_api import mediator_post
 
 
 def usr_status(token):
@@ -32,14 +33,14 @@ def usr_status(token):
         ]
     }
 
-    email_status ={}
+    email_status = {}
 
     # print(db)
     # print(len(db))
     # using dict.items()
     count = 0
     for key, value in db.items():
-        if isinstance(value, list):  # this will count the num of dict in list 'usrs'
+        if isinstance(value, list):  # count the num of dict in list 'usrs'
             count += len(value)
 
     if count > 0:  # there are users in the list
@@ -55,10 +56,11 @@ def usr_status(token):
                     if user_status != 'disabled':
                         user_status = "True"
                         # print(usr_status)
-                        print("User {0} has the following OoO status {1}".format(email_address, user_status))
-                        if email_address in email_status: # and value == email_status[email_address]:
+                        print("User {0} has the following OoO status {1}"
+                              .format(email_address, user_status))
+                        if email_address in email_status:
                             print('email address in db')
-                            if user_status in email_status: # and value == email_status[usr_status]:
+                            if user_status in email_status:
                                 print('status is a match')
                             else:
                                 email_status['status'] = user_status
@@ -66,23 +68,28 @@ def usr_status(token):
                             email_status['email'] = email_address
                             email_status['status'] = user_status
                     else:
-                        print("User {0} does not have an active Out of Office alert".format(email_address))
+                        print("User {0} does not have an active Out of Office alert"
+                              .format(email_address))
 
                 else:
-                    print("This User {0} is not in the monitor state".format(email_address))
+                    print("This User {0} is not in the monitor state"
+                          .format(email_address))
     else:
         print("There are currently no users in database")
 
-    # check db data for email address and if monitor is true - if so add to list to check
+    # check db data for email address and if monitor is true -
+    # if so add to list to check
     # pass this list to mailbox function this will be variable email_addrs
     # mailboxsettings(token, email_addr_list)
 
     # POST TO API
+
+    # mediator_post()
     print(email_status)
 
-    hub_url = "http://24.239.120.11:10001/api/setstatus"
+    hub_url = "http://<ip-address>/api/setstatus"
 
-    payload = "{\n\t\"email\":\"clint@karmatek.io\",\n\t\"status\":\"True\"\n\t\n}"
+    payload = "{\n\t\"email\":\"emailhere\",\n\t\"status\":\"True\"\n\t\n}"
 
     headers = {
         'Content-Type': 'application/json'
@@ -91,7 +98,8 @@ def usr_status(token):
     response = requests.post(hub_url, data=payload, headers=headers)
 
     print(response.text)
-    #data = response.json()
-    #print(str(data))
+
+
+
 
 
