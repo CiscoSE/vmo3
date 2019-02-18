@@ -20,7 +20,8 @@ from get_status import usr_status
 tenant = os.environ['TENANT']
 client_id = os.environ['CLIENT_ID']
 client_secret = os.environ['CLIENT_SECRET']
-
+mediator_ip = os.environ['MEDIATOR_IP']
+mediator_port = os.environ['MEDIATOR_PORT']
 
 resource = "https://graph.microsoft.com"
 grant_type = "client_credentials"
@@ -28,7 +29,7 @@ grant_type = "client_credentials"
 auth_base_url = "https://login.microsoftonline.com/"
 oauth_url_v1 = auth_base_url + tenant + str("/oauth2/token")
 mailbox_base_url = "https://graph.microsoft.com/v1.0/users/"
-
+mediator_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setstatus"
 
 if __name__ == '__main__':
 
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     # Schedule User Status Check
     scheduler.add_job(usr_status, 'interval', seconds=5,
                       args=[tkn])
-    usr_status(tkn)
+    usr_status(tkn, mediator_url)
 
     # Start Scheduler
     scheduler.start()
