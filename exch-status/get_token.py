@@ -6,7 +6,7 @@ Author: Clint Mann
 
 Description:
 This is the token microservice, it will
- - get a token from Microsoft Graph API using Client Credentials
+ + get a token from Microsoft Graph API using Client Credentials
 """
 
 import requests
@@ -14,7 +14,8 @@ import requests
 
 def auth_token(c_id, c_secret, r_url, g_type, auth_url):
 
-    payload = 'client_id={0}&client_secret={1}&resource={2}&grant_type={3}'.format(c_id, c_secret, r_url, g_type)
+    payload = 'client_id={0}&client_secret={1}&resource={2}&grant_type={3}'\
+        .format(c_id, c_secret, r_url, g_type)
 
     headers = {
         'Content-Type': "application/x-www-form-urlencoded",
