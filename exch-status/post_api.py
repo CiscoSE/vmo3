@@ -29,3 +29,18 @@ def mediator_post(mediator_url, status_payload):
     print(response.text)
     # data = response.json()
     # print(str(data))
+
+
+def listener_get(listener_url):
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    # req_data = request.get_json(force=True, silent=True)
+    response = requests.get(listener_url, headers=headers)
+    print(response.text)
+
+    print('DATA', response)
+
+    return response
