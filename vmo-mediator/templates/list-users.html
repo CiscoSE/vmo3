@@ -28,8 +28,9 @@
                 <td>{{row["Active"]}}</td>
 			    <td class="text-right">
 				    <div class="row">
-					    <a class="btn" href="{{ url_for('toggle_status',emailid=row['Alias']) }}">Toggle VMO</a>
 
+					    <!--<a class="btn" href="{{ url_for('toggle_status',emailid=row['Alias']) }}">Toggle VMO</a>--!>
+                        <a href="{{ url_for('toggle_status',emailid=row['Alias']) }} "><button type="button">Toggle VMO</button></a>
 				    </div>
 			    </td>
 

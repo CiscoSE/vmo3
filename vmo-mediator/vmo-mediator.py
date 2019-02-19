@@ -198,30 +198,49 @@ def setstatus():
     if WEBDEBUG:
         print_details(request)
 
-    req_data = request.get_json()
-    email=req_data['email']
-    status=req_data['status']
+    if not request.is_json:
+        return jsonify({"result": "Not JSON"}),400
+
+    req_data = request.get_json(force=True, silent=True)
+
+    try:
+        email = req_data['email']
+        status = req_data['status']
+    except (KeyError, TypeError, ValueError):
+        return jsonify({"result":"Invalid JSON"}),400
+
 
     print("Setting the status for: "+email+" to: "+ status)
 
     ret, msg = db.search_database(dbname, "users", "Alias", email)
-    print(msg)
+
+    if not ret:
+        return jsonify({"result":"Not Found"}),404
 
 
     apistring = vmip+"/ucxn/users/"+msg['CallHandlerObjectId']+"/greeting/"+status
 
     print (apistring)
 
-    resp = requests.post(apistring)
-    data=resp.json()
-    print(str(data))
+    try:
+        resp = requests.post(apistring)
+    except requests.exceptions.RequestException as e:
+        print(e)
+        return jsonify({"result":str(e)}),403
 
-    updatestring = "AlternateGreetingEnabled='" + status +"'"
-    ret, msg = db.update_database(dbname, "users", updatestring, "Alias='" + email + "'")
+    if resp.status_code == 200:
+        data=resp.json()
+        print(str(data))
 
-    data = db.search_db(dbname, "users")
+        updatestring = "AlternateGreetingEnabled='" + status +"'"
+        ret, msg = db.update_database(dbname, "users", updatestring, "Alias='" + email + "'")
 
-    return jsonify({"result":"True"})
+        data = db.search_db(dbname, "users")
+
+        return jsonify({"result":"True"}),200
+    else:
+        return jsonify({"result": "Internal Error"}),403
+
 
 
 if __name__ == '__main__':
