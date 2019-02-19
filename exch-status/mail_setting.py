@@ -32,8 +32,8 @@ def auto_reply(tkn, email_addr):
         response = requests.get(mailbox_url, data=payload, headers=headers)
         resp_json = response.json()
         odata = resp_json['@odata.context']
-        int_reply = resp_json['internalReplyMessage']
-        ext_reply = resp_json['externalReplyMessage']
+        int_msg = resp_json['internalReplyMessage']
+        ext_msg = resp_json['externalReplyMessage']
         status = resp_json['status']
 
         # print(odata)
@@ -45,4 +45,4 @@ def auto_reply(tkn, email_addr):
         print(e)
         sys.exit(1)
 
-    return status
+    return status, ext_msg
