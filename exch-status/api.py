@@ -14,6 +14,20 @@ import requests
 import json
 
 
+def listener_get(listener_url):
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.get(listener_url, headers=headers)
+    print(response.text)
+
+    print('DATA', response)
+
+    return response
+
+
 def mediator_post(mediator_url, status_payload):
     print(status_payload)
 
@@ -29,3 +43,6 @@ def mediator_post(mediator_url, status_payload):
     print(response.text)
     # data = response.json()
     # print(str(data))
+
+
+

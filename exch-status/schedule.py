@@ -16,12 +16,16 @@ import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from get_token import auth_token
 from get_status import usr_status
+from mediator_hello import  mediator_sync
+
 
 tenant = os.environ['TENANT']
 client_id = os.environ['CLIENT_ID']
 client_secret = os.environ['CLIENT_SECRET']
 mediator_ip = os.environ['MEDIATOR_IP']
 mediator_port = os.environ['MEDIATOR_PORT']
+listener_ip = os.environ['LISTENER_IP']
+listener_port = os.environ['LISTENER_PORT']
 
 resource = "https://graph.microsoft.com"
 grant_type = "client_credentials"
@@ -30,10 +34,17 @@ auth_base_url = "https://login.microsoftonline.com/"
 oauth_url_v1 = auth_base_url + tenant + str("/oauth2/token")
 mailbox_base_url = "https://graph.microsoft.com/v1.0/users/"
 mediator_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setstatus"
+mediator_sync_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setup"
+listener_url =  "http://" + listener_ip + ":" + listener_port + "/users"
+
+hello = "hello"
 
 if __name__ == '__main__':
 
+    # mediator_sync(mediator_sync_url, hello)
+
     scheduler = BackgroundScheduler()
+
     # Schedule Get Authentication Token - expires every 3600 seconds
     scheduler.add_job(auth_token, 'interval', seconds=3500,
                       args=[client_id, client_secret, resource,
@@ -43,8 +54,8 @@ if __name__ == '__main__':
 
     # Schedule User Status Check
     scheduler.add_job(usr_status, 'interval', seconds=5,
-                      args=[tkn, mediator_url])
-    usr_status(tkn, mediator_url)
+                      args=[tkn, mediator_url, listener_url])
+    usr_status(tkn, mediator_url, listener_url)
 
     # Start Scheduler
     scheduler.start()

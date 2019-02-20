@@ -12,65 +12,55 @@ This is the user status microservice, it will
 """
 
 from mail_setting import auto_reply
-from post_api import mediator_post
+from api import mediator_post , listener_get
 
 
-def usr_status(token, med_url ):
+def usr_status(token, med_url, listen_api_url):
 
+    mon_user = listener_get(listen_api_url)
 
-    email_status = {}
+    monitor_user = mon_user.json()
 
-    # print(db)
-    # print(len(db))
-    # using dict.items()
-    count = 0
-    for key, value in db.items():
-        if isinstance(value, list):  # count the num of dict in list 'usrs'
-            count += len(value)
+    count = int(len(monitor_user))
 
     if count > 0:  # there are users in the list
-        for key, value in db.items():
-            for i in value:  # this will print the email addresses
-                email_address = i['email']
-                monitor = i['monitor']
-
-                if monitor is True:
-                    print(email_address, monitor)
-                    # print(monitor)
-                    user_status = auto_reply(token, email_address)
-                    if user_status != 'disabled':
-                        user_status = "True"
-                        # print(usr_status)
-                        print("User {0} has the following OoO status {1}"
-                              .format(email_address, user_status))
-                        if email_address in email_status:
-                            print('email address in db')
-                            if user_status in email_status:
-                                print('status is a match')
-                            else:
-                                email_status['status'] = user_status
-                        else:
-                            email_status['email'] = email_address
-                            email_status['status'] = user_status
+        email_address = monitor_user['email']
+        monitor = monitor_user['status']
+        if monitor == 'True':
+            print(email_address, monitor)
+            # print(monitor)
+            user_status, message = auto_reply(token, email_address)
+            if user_status != 'disabled':
+                user_status = "True"
+                # print(usr_status)
+                print("User {0} has the following OoO status {1} {2}"
+                        .format(email_address, user_status, message))
+                if email_address in monitor_user:
+                    print('email address in db')
+                    if user_status in monitor_user:
+                        print('status is a match')
                     else:
-                        print("User {0} does not have an active Out of Office alert"
-                              .format(email_address))
-
+                        monitor_user['status'] = user_status
                 else:
-                    print("This User {0} is not in the monitor state"
-                          .format(email_address))
+                    monitor_user['email'] = email_address
+                    monitor_user['status'] = user_status
+                    monitor_user['message'] = message
+
+                    print('email status ', monitor_user)
+                    print('message', message)
+                    mediator_post(med_url, monitor_user)
+            else:
+                print("User {0} does not have an active Out of Office alert"
+                        .format(email_address))
+
+        else:
+            print("This User {0} is not in the monitor state"
+                    .format(email_address))
+
     else:
         print("There are currently no users in database")
 
-    # check db data for email address and if monitor is true -
-    # if so add to list to check
-    # pass this list to mailbox function this will be variable email_addrs
-    # mailboxsettings(token, email_addr_list)
 
-    # POST TO API
-    print('email status ', email_status)
-
-    mediator_post(med_url, email_status)
 
 
 
