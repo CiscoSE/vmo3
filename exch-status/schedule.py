@@ -41,7 +41,7 @@ hello = "hello"
 
 if __name__ == '__main__':
 
-    # mediator_sync(mediator_sync_url, hello)
+    mediator_sync(mediator_sync_url)
 
     scheduler = BackgroundScheduler()
 
