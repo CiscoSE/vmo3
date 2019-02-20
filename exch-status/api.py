@@ -43,7 +43,7 @@ def mediator_post(mediator_url, status_payload):
 
     # print('Mediator POST', response.text)
     data = response.json()
-    print('Mediator POST response', str(data))
+    print('POST REQUEST - Mediator response', str(data))
 
 
 
