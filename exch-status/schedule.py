@@ -41,30 +41,36 @@ hello = "hello"
 
 if __name__ == '__main__':
 
-    mediator_sync(mediator_sync_url)
+    sync_resp = mediator_sync(mediator_sync_url)
+    resp = sync_resp['result']
 
-    scheduler = BackgroundScheduler()
+    if resp == 'True':
+        print('Mediator Server sync SUCCESSFUL.')
 
-    # Schedule Get Authentication Token - expires every 3600 seconds
-    scheduler.add_job(auth_token, 'interval', seconds=3500,
-                      args=[client_id, client_secret, resource,
-                            grant_type, oauth_url_v1])
-    tkn = auth_token(client_id, client_secret, resource,
-                     grant_type, oauth_url_v1)
+        scheduler = BackgroundScheduler()
 
-    # Schedule User Status Check
-    scheduler.add_job(usr_status, 'interval', seconds=5,
-                      args=[tkn, mediator_url, listener_url])
-    usr_status(tkn, mediator_url, listener_url)
+        # Schedule Get Authentication Token - expires every 3600 seconds
+        scheduler.add_job(auth_token, 'interval', seconds=3500,
+                          args=[client_id, client_secret, resource,
+                                grant_type, oauth_url_v1])
+        tkn = auth_token(client_id, client_secret, resource,
+                         grant_type, oauth_url_v1)
 
-    # Start Scheduler
-    scheduler.start()
+        # Schedule User Status Check
+        scheduler.add_job(usr_status, 'interval', seconds=5,
+                          args=[tkn, mediator_url, listener_url])
+        usr_status(tkn, mediator_url, listener_url)
 
-    print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
+        # Start Scheduler
+        scheduler.start()
 
-    try:
-        # Keep the main thread alive
-        while True:
-            time.sleep(1)
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
+        print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
+
+        try:
+            # Keep the main thread alive
+            while True:
+                time.sleep(1)
+        except (KeyboardInterrupt, SystemExit):
+            scheduler.shutdown()
+    else:
+        print('Was unable to sync with Mediator Server')
