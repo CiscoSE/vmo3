@@ -12,7 +12,7 @@ This is the user status microservice, it will
 """
 
 from mail_setting import auto_reply
-from post_api import mediator_post , listener_get
+from api import mediator_post , listener_get
 
 
 def usr_status(token, med_url, listen_api_url):
