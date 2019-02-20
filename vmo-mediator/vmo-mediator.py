@@ -3,6 +3,7 @@ import requests
 import datetime
 from utilities import print_details
 from flask import Flask,jsonify,request,render_template,redirect
+import json
 import db
 
 print("VMO3 Mediator Starting...\n")
@@ -97,6 +98,10 @@ def synchronize_dbs():
             ret, msg = db.insert_into_database(dbname, "users", ObjectId=user['ObjectId'], Alias=user['Alias'], Extension=user['Extension'],CallHandlerObjectID=user['CallHandlerObjectId'],AlternateGreetingEnabled=user['AlternateGreetingEnabled'],Active="True")
 
     return
+
+
+
+
 
 #
 # Main Program Logic
@@ -209,6 +214,14 @@ def setstatus():
     except (KeyError, TypeError, ValueError):
         return jsonify({"result":"Invalid JSON"}),400
 
+    try:
+        message = req_data['message']
+    except (KeyError, TypeError, ValueError):
+        print("Incoming Message doesn't include a OOO message")
+    else:
+        print("Incoming Message does include a OOO message")
+        print("The message is: '"+message+"'")
+
 
     print("Setting the status for: "+email+" to: "+ status)
 
@@ -218,12 +231,23 @@ def setstatus():
         return jsonify({"result":"Not Found"}),404
 
 
-    apistring = vmip+"/ucxn/users/"+msg['CallHandlerObjectId']+"/greeting/"+status
+    apistring = vmip+"/ucxn/users/"+msg['CallHandlerObjectId']+"/greeting"
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    jsonmsg = {}
+    jsonmsg['action']=status
+    if message:
+        jsonmsg['message']=message
+
 
     print (apistring)
+    print (jsonmsg)
 
     try:
-        resp = requests.post(apistring)
+        resp = requests.post(apistring,data=json.dumps(jsonmsg),headers=headers)
     except requests.exceptions.RequestException as e:
         print(e)
         return jsonify({"result":str(e)}),403
@@ -239,9 +263,38 @@ def setstatus():
 
         return jsonify({"result":"True"}),200
     else:
-        return jsonify({"result": "Internal Error"}),403
+        return jsonify({"result": "Internal Error"}),resp.status_code
+
+@app.route('/api/setup', methods=['POST','GET'])
+def setup():
+
+    data = db.search_db(dbname, "users")
+    for i in data:
+        print ("Send Register Event to Email Server for: "+i[2]+" to "+i[6])
+
+        apistring = mailip+"/api/registeruser"
+
+        print (apistring)
+
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        user={}
+        user['email'] = i[2]
+        user['status'] = i[6]
 
 
+        print (user)
+        try:
+            response = requests.post(apistring, data=json.dumps(user),
+                                     headers=headers)
+        except requests.exceptions.RequestException as e:
+            print(e)
+
+
+
+    return jsonify({"result": "True"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True,host=listenip,port=listenport)
