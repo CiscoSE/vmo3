@@ -35,8 +35,8 @@ oauth_url_v1 = auth_base_url + tenant + str("/oauth2/token")
 mailbox_base_url = "https://graph.microsoft.com/v1.0/users/"
 mediator_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setstatus"
 mediator_sync_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setup"
-
 listener_url =  "http://" + listener_ip + ":" + listener_port + "/users"
+
 hello = "hello"
 
 if __name__ == '__main__':
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     # mediator_sync(mediator_sync_url, hello)
 
     scheduler = BackgroundScheduler()
+
     # Schedule Get Authentication Token - expires every 3600 seconds
     scheduler.add_job(auth_token, 'interval', seconds=3500,
                       args=[client_id, client_secret, resource,
