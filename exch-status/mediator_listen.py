@@ -52,7 +52,6 @@ def monitorusers():
         email = req_data['email']
         # print(email)
         status = req_data['status']
-        # status = request.args.get('status')
         # print(status)
         USER['email'] = email
         USER['status'] = status
