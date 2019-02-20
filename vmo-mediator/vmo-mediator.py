@@ -231,12 +231,23 @@ def setstatus():
         return jsonify({"result":"Not Found"}),404
 
 
-    apistring = vmip+"/ucxn/users/"+msg['CallHandlerObjectId']+"/greeting/"+status
+    apistring = vmip+"/ucxn/users/"+msg['CallHandlerObjectId']+"/greeting"
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    jsonmsg = {}
+    jsonmsg['action']=status
+    if message:
+        jsonmsg['message']=message
+
 
     print (apistring)
+    print (jsonmsg)
 
     try:
-        resp = requests.post(apistring)
+        resp = requests.post(apistring,data=json.dumps(jsonmsg),headers=headers)
     except requests.exceptions.RequestException as e:
         print(e)
         return jsonify({"result":str(e)}),403
@@ -252,7 +263,7 @@ def setstatus():
 
         return jsonify({"result":"True"}),200
     else:
-        return jsonify({"result": "Internal Error"}),403
+        return jsonify({"result": "Internal Error"}),resp.status_code
 
 @app.route('/api/setup', methods=['POST','GET'])
 def setup():
