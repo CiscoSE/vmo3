@@ -22,6 +22,7 @@ def usr_status(token, med_url, listen_api_url):
     monitor_user = mon_user.json()
 
     count = int(len(monitor_user))
+    print(count)
 
     if count > 0:  # there are users in the list
         email_address = monitor_user['email']
@@ -35,9 +36,9 @@ def usr_status(token, med_url, listen_api_url):
                 # print(usr_status)
                 print("User {0} has the following OoO status {1} {2}"
                         .format(email_address, user_status, message))
-                if email_address in monitor_user:
+                if email_address in monitor_user.values():
                     print('email address in db')
-                    if user_status in monitor_user:
+                    if user_status in monitor_user.values():
                         print('status is a match')
                     else:
                         monitor_user['status'] = user_status
