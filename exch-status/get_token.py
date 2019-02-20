@@ -25,6 +25,6 @@ def auth_token(c_id, c_secret, r_url, g_type, auth_url):
     response = requests.post(auth_url, data=payload, headers=headers)
     resp_json = response.json()
     access_token = resp_json['access_token']
-    print(access_token)
+    print('Retrieved MS Graph Access Token - SUCCESSFUL')
 
     return access_token
