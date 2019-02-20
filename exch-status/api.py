@@ -21,15 +21,16 @@ def listener_get(listener_url):
     }
 
     response = requests.get(listener_url, headers=headers)
-    print(response.text)
+    print('Response', response.text)
 
-    print('DATA', response)
-
+    print('GET REQUEST to Listener API', response)
+    data = response.json()
+    print('GET RESPONSE DATA', str(data))
     return response
 
 
 def mediator_post(mediator_url, status_payload):
-    print(status_payload)
+    print('Status payload', status_payload)
 
     payload = status_payload
 
@@ -40,9 +41,9 @@ def mediator_post(mediator_url, status_payload):
     response = requests.post(mediator_url, data=json.dumps(payload),
                              headers=headers)
 
-    print(response.text)
-    # data = response.json()
-    # print(str(data))
+    # print('Mediator POST', response.text)
+    data = response.json()
+    print('Mediator POST response', str(data))
 
 
 
