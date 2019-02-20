@@ -35,8 +35,8 @@ oauth_url_v1 = auth_base_url + tenant + str("/oauth2/token")
 mailbox_base_url = "https://graph.microsoft.com/v1.0/users/"
 mediator_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setstatus"
 mediator_sync_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setup"
-listener_url =  "http://" + listener_ip + ":" + listener_port + "/users"
-
+# listener_url =  "http://" + listener_ip + ":" + listener_port + "/users"
+listener_url = "https://" + listener_ip + "/users"
 hello = "hello"
 
 if __name__ == '__main__':
