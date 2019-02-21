@@ -193,6 +193,31 @@ def toggle_status(emailid):
     else:
         print ("Submitting a request to turn off the alert on: "+emailid)
 
+    apistring = mailip + "/monitor"
+
+    print(apistring)
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    user = {}
+    user['email'] = emailid
+    user['status'] = value
+
+    print(user)
+    try:
+        response = requests.post(apistring, data=json.dumps(user),
+                                 headers=headers)
+    except requests.exceptions.RequestException as e:
+        print(e)
+
+    if response.status_code == 200:
+        data=response.text
+        print(str(data))
+
+
+
     return redirect("/", code=302)
 
 
@@ -272,7 +297,7 @@ def setup():
     for i in data:
         print ("Send Register Event to Email Server for: "+i[2]+" to "+i[6])
 
-        apistring = mailip+"/api/registeruser"
+        apistring = mailip+"/monitor"
 
         print (apistring)
 
@@ -292,7 +317,9 @@ def setup():
         except requests.exceptions.RequestException as e:
             print(e)
 
-
+        if response.status_code == 200:
+            data=response.text
+            print(str(data))
 
     return jsonify({"result": "True"}), 200
 
