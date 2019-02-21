@@ -29,21 +29,17 @@ def listener_get(listener_url):
     return response
 
 
-def listener_reset(listener_url, reset_payload):
-    print('Reset Payload', reset_payload) # should be empty dict
-
-    payload = reset_payload
+def listener_reset(listener_mon_url):
 
     headers = {
         'Content-Type': 'application/json'
     }
 
-    response = requests.post(listener_url, data=json.dumps(payload),
-                             headers=headers)
+    response = requests.delete(listener_mon_url, headers=headers)
 
-    # print('Listener reset POST', response.text)
-    data = response.json()
-    print('POST REQUEST - Mediator reset response', str(data))
+    print('Listener reset POST', response.text)
+    # data = response.json()
+    print('POST REQUEST - Mediator reset response', str(response))
 
 
 def mediator_post(mediator_url, status_payload):
