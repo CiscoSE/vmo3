@@ -29,17 +29,18 @@ def listener_get(listener_url):
     return response
 
 
-def listener_reset(listener_mon_url):
+def listener_reset(listener_del_url, mon_user):
 
+    payload = mon_user
     headers = {
         'Content-Type': 'application/json'
     }
 
-    response = requests.delete(listener_mon_url, headers=headers)
+    response = requests.delete(listener_del_url, data=json.dumps(payload), headers=headers)
 
-    print('Listener reset POST', response.text)
+    print('Listener reset DELETE', response.text)
     # data = response.json()
-    print('POST REQUEST - Mediator reset response', str(response))
+    print('DELETE REQUEST - Mediator reset response', str(response))
 
 
 def mediator_post(mediator_url, status_payload):

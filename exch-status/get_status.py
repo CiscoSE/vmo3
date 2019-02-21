@@ -15,15 +15,15 @@ from mail_setting import auto_reply
 from api import mediator_post , listener_get, listener_reset
 
 
-def usr_status(token, med_url, listen_api_url, listen_mon_url):
+def usr_status(token, med_url, listen_api_url, listen_del_url):
 
     mon_user = listener_get(listen_api_url)
     print('GS - GET RESPONSE from Listener', mon_user)  # should be <Response [200]>
 
-    listener_reset(listen_mon_url)  # reset
-
     monitor_user = mon_user.json()
-    print('GS - GET RESPONSE JSON', monitor_user)  # check if this is new?
+    print('GS - GET RESPONSE JSON', monitor_user)
+
+    listener_reset(listen_del_url, monitor_user)  # DELETE request to reset
 
     count = int(len(monitor_user))
     print(count)

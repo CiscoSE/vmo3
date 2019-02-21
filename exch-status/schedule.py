@@ -37,6 +37,7 @@ mediator_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setstatus"
 mediator_sync_url = "http://" + mediator_ip + ":" + mediator_port + "/api/setup"
 listener_url = "https://" + listener_ip + "/users"
 listener_mon_url = "https://" + listener_ip + "/monitor"
+listener_del_url = "https://" + listener_ip + "/reset"
 
 if __name__ == '__main__':
 
@@ -57,8 +58,8 @@ if __name__ == '__main__':
 
         # Schedule User Status Check
         scheduler.add_job(usr_status, 'interval', seconds=5,
-                          args=[tkn, mediator_url, listener_url, listener_mon_url])
-        usr_status(tkn, mediator_url, listener_url, listener_mon_url)
+                          args=[tkn, mediator_url, listener_url, listener_del_url])
+        usr_status(tkn, mediator_url, listener_url, listener_del_url)
 
         # Start Scheduler
         scheduler.start()
