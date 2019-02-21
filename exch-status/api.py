@@ -23,10 +23,27 @@ def listener_get(listener_url):
     response = requests.get(listener_url, headers=headers)
     print('Response', response.text)
 
-    print('GET REQUEST to Listener API', response)
+    print('L - GET REQUEST to Listener API', response)
     data = response.json()
-    print('GET RESPONSE DATA', str(data))
+    print('L - GET RESPONSE DATA', str(data))
     return response
+
+
+def listener_reset(listener_url, reset_payload):
+    print('Reset Payload', reset_payload) # should be empty dict
+
+    payload = reset_payload
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.post(listener_url, data=json.dumps(payload),
+                             headers=headers)
+
+    # print('Listener reset POST', response.text)
+    data = response.json()
+    print('POST REQUEST - Mediator reset response', str(data))
 
 
 def mediator_post(mediator_url, status_payload):
