@@ -320,6 +320,8 @@ def setup():
         if response.status_code == 200:
             data=response.text
             print(str(data))
+            print("")
+
 
     return jsonify({"result": "True"}), 200
 
