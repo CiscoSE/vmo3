@@ -12,32 +12,38 @@ This is the user status microservice, it will
 """
 
 from mail_setting import auto_reply
-from api import mediator_post , listener_get
+from api import mediator_post , listener_get, listener_reset
 
 
-def usr_status(token, med_url, listen_api_url):
+def usr_status(token, med_url, listen_api_url, listen_del_url):
 
     mon_user = listener_get(listen_api_url)
+    print('GS - GET RESPONSE from Listener', mon_user)  # should be <Response [200]>
 
     monitor_user = mon_user.json()
+    print('GS - GET RESPONSE JSON', monitor_user)
+
+    listener_reset(listen_del_url, monitor_user)  # DELETE request to reset
 
     count = int(len(monitor_user))
+    print(count)
 
     if count > 0:  # there are users in the list
         email_address = monitor_user['email']
         monitor = monitor_user['status']
-        if monitor == 'True':
+        if monitor == 'True':  # user supposed to be monitored
             print(email_address, monitor)
             # print(monitor)
-            user_status, message = auto_reply(token, email_address)
-            if user_status != 'disabled':
+            user_status, message = auto_reply(token, email_address)  # get status from MS Graph
+
+            if user_status != 'disabled':  # this means autoReply setting is enabled in some way
                 user_status = "True"
                 # print(usr_status)
                 print("User {0} has the following OoO status {1} {2}"
-                        .format(email_address, user_status, message))
-                if email_address in monitor_user:
+                      .format(email_address, user_status, message))
+                if email_address in monitor_user.values():
                     print('email address in db')
-                    if user_status in monitor_user:
+                    if user_status in monitor_user.values():
                         print('status is a match')
                     else:
                         monitor_user['status'] = user_status
@@ -48,14 +54,16 @@ def usr_status(token, med_url, listen_api_url):
 
                     print('email status ', monitor_user)
                     print('message', message)
+                    print('POST OoO Status to Mediator Server...')
                     mediator_post(med_url, monitor_user)
+                    print('POST complete...')
             else:
                 print("User {0} does not have an active Out of Office alert"
-                        .format(email_address))
+                      .format(email_address))
 
         else:
             print("This User {0} is not in the monitor state"
-                    .format(email_address))
+                  .format(email_address))
 
     else:
         print("There are currently no users in database")

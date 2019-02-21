@@ -14,18 +14,21 @@ import requests
 import json
 
 
-def mediator_sync(sync_url, sync_payload):
-    print(sync_payload)
+def mediator_sync(sync_url):
+    print('In Mediator Sync...')
+    #print(sync_payload)
 
-    payload = sync_payload
+    #payload = sync_payload
 
     headers = {
         'Content-Type': 'application/json'
     }
 
-    response = requests.post(sync_url, data=json.dumps(payload),
-                             headers=headers)
+    response = requests.post(sync_url, headers=headers)
 
-    print(response.text)
-    # data = response.json()
-    # print(str(data))
+
+    #print(response.text)
+    resp = response.json()
+    #print(str(resp))
+
+    return resp
