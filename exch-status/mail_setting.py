@@ -21,11 +21,11 @@ def graph_check_user(tkn, graph_base_url):
     }
     try:
         response = requests.get(graph_base_url, headers=headers)
-        print('Response', response.text)
+        # print('Response', response.text)
         resp_json = response.json()
-        print('L - GET REQUEST to Graph check user', response)
+        # print('L - GET REQUEST to Graph check user', response)
         data = response.json()
-        print('L - GET RESPONSE GRAPH CHECK DATA', str(data))
+        # print('L - GET RESPONSE GRAPH CHECK DATA', str(data))
 
     except requests.exceptions.RequestException as e:
         print(e)
@@ -33,9 +33,10 @@ def graph_check_user(tkn, graph_base_url):
 
     return resp_json
 
-def auto_reply(tkn, email_addr):
 
-    mailbox_url = "https://graph.microsoft.com/v1.0/users/" + email_addr + str(
+def auto_reply(tkn, email_addr, graph_base_url):
+
+    mailbox_url = graph_base_url + email_addr + str(
         "/mailboxSettings/automaticRepliesSetting")
 
     payload = ""

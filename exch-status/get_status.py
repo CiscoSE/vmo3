@@ -31,15 +31,15 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
     if count > 0:  # there are users in the list
         email_address = monitor_user['email']
         monitor = monitor_user['status']
-
+        print('CHECK GRAPH FOR EMAIL: ', email_address)
         all_users = graph_check_user(token, mailbox_base_url)
-
-        if email_address in all_users.values():  # check if email account exists
-
+        print('ALL USERS FROM GRAPH: ', all_users)
+        if email_address in all_users.values():  # check if email account exists - NOT WORKING YET
             if monitor == 'True':  # user supposed to be monitored
                 print(email_address, monitor)
                 # print(monitor)
-                user_status, message = auto_reply(token, email_address)  # get status from MS Graph
+                user_status, message = auto_reply(
+                    token, email_address, mailbox_base_url)  # get status from MS Graph
 
                 if user_status != 'disabled':  # this means autoReply setting is enabled in some way
                     user_status = "True"
@@ -69,7 +69,8 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
             else:
                 print("This User {0} is not in the monitor state"
                       .format(email_address))
-
+        else:
+            print("USER {0} not found in MS GRAPH".format(email_address))
     else:
         print("There are currently no users in database")
 
