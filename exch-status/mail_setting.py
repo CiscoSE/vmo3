@@ -13,6 +13,26 @@ import sys
 import requests
 
 
+def graph_check_user(tkn, graph_base_url):
+
+    headers = {
+        'Authorization': "Bearer " + str(tkn),
+        'cache-control': "no-cache"
+    }
+    try:
+        response = requests.get(graph_base_url, headers=headers)
+        print('Response', response.text)
+        resp_json = response.json()
+        print('L - GET REQUEST to Graph check user', response)
+        data = response.json()
+        print('L - GET RESPONSE GRAPH CHECK DATA', str(data))
+
+    except requests.exceptions.RequestException as e:
+        print(e)
+        sys.exit(1)
+
+    return resp_json
+
 def auto_reply(tkn, email_addr):
 
     mailbox_url = "https://graph.microsoft.com/v1.0/users/" + email_addr + str(
@@ -25,12 +45,15 @@ def auto_reply(tkn, email_addr):
     }
 
     try:
+        # check if resource - the email address exists - if so continue - else error message
         response = requests.get(mailbox_url, data=payload, headers=headers)
         resp_json = response.json()
+        print(response.text)
+        print(resp_json)
+        status = resp_json['status']
         # odata = resp_json['@odata.context']
         # int_msg = resp_json['internalReplyMessage']
         ext_msg = resp_json['externalReplyMessage']
-        status = resp_json['status']
 
     except requests.exceptions.RequestException as e:
         print(e)

@@ -18,7 +18,6 @@ from get_token import auth_token
 from get_status import usr_status
 from mediator_hello import  mediator_sync
 
-
 tenant = os.environ['TENANT']
 client_id = os.environ['CLIENT_ID']
 client_secret = os.environ['CLIENT_SECRET']
@@ -58,8 +57,8 @@ if __name__ == '__main__':
 
         # Schedule User Status Check
         scheduler.add_job(usr_status, 'interval', seconds=5,
-                          args=[tkn, mediator_url, listener_url, listener_del_url])
-        usr_status(tkn, mediator_url, listener_url, listener_del_url)
+                          args=[tkn, mediator_url, listener_url, mailbox_base_url])
+        usr_status(tkn, mediator_url, listener_url, mailbox_base_url)
 
         # Start Scheduler
         scheduler.start()
