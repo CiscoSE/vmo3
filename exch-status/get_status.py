@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 
 """
@@ -14,70 +15,120 @@ This is the user status microservice, it will
 from mail_setting import auto_reply, graph_check_user
 from api import mediator_post, listener_get, listener_reset
 
+vmo_enabled_usrs = []
+
 
 def usr_status(token, med_url, listen_api_url, mailbox_base_url):
 
-    mon_user = listener_get(listen_api_url)
-    print('GS - GET RESPONSE from Listener', mon_user)  # should be <Response [200]>
+    # 1 - Check API for POST from MEDIATOR
+    mon_user_resp = listener_get(listen_api_url)  # GET user to monitor
+    print('GS - GET RESPONSE from Listener', mon_user_resp)  # should be
+    # <Response [200]>
 
-    monitor_user = mon_user.json()
+    monitor_user = mon_user_resp.json()
     print('GS - GET RESPONSE JSON', monitor_user)
-
-    # listener_reset(listen_del_url, monitor_user)  # DELETE request to reset
 
     count = int(len(monitor_user))
     print(count)
 
-    if count > 0:  # there are users in the list
+    # 2 - check if there was anything POSTED from MEDIATOR
+    if count > 0:  # MEDIATOR posted users to be monitored
         email_address = monitor_user['email']
-        monitor = monitor_user['status']
+        monitor_status = monitor_user['status']
+
+        # 3 - there is a user - query MS Graph
         print('CHECK GRAPH FOR EMAIL: ', email_address)
-        all_users = graph_check_user(token, mailbox_base_url)
+        graph_check = graph_check_user(token, mailbox_base_url)
+        all_users = graph_check['value']
+        # print('value type', type(value))
+        print('value', all_users)
 
-        for element in all_users['value']:   # check if email account exists - NOT WORKING YET
-            if element['mail'] == email_address:
-                print("USER {0} FOUND in MS GRAPH".format(email_address))
+        # 4 - check MS Graph response - does the user exist
+        all_users_str = str(all_users)
+        if email_address in all_users_str:  # user has email account
+            print("USER {0} FOUND in MS AD".format(email_address))
 
-                if monitor == 'True':  # user supposed to be monitored
-                    print(email_address, monitor)
-                    # print(monitor)
-                    user_status, message = auto_reply(
-                        token, email_address, mailbox_base_url)  # get status from MS Graph
+            # 5 - should this user be monitored
+            if monitor_status == 'True':  # user supposed to be monitored
+                print(email_address, monitor_status)
 
-                    if user_status != 'disabled':  # this means autoReply setting is enabled in some way
-                        user_status = "True"
-                        # print(usr_status)
-                        print("User {0} has the following OoO status {1} {2}"
-                              .format(email_address, user_status, message))
-                        if email_address in monitor_user.values():
-                            print('email address in db')
-                            if user_status in monitor_user.values():
-                                print('status is a match')
-                            else:
-                                monitor_user['status'] = user_status
-                        else:
-                            monitor_user['email'] = email_address
-                            monitor_user['status'] = user_status
-                            monitor_user['message'] = message
+                # 6 - Query MS GRAPH for user OoO status
+                ooo_status, message = auto_reply(
+                    token, email_address, mailbox_base_url)
 
-                            print('email status ', monitor_user)
-                            print('message', message)
-                            print('POST OoO Status to Mediator Server...')
-                            mediator_post(med_url, monitor_user)
-                            print('POST complete...')
+                # 7 - if OoO is enabled - POST to MEDIATOR
+                if ooo_status != 'disabled':  # autoReply (OoO) is enabled
+                    ooo_status = "True"  # normalize status
+
+                    # 8 - add this user to local storage
+                    # add ooo_status to vmo_enabled_usrs
+
+                    profile = {"email": email_address, "monitor":
+                               monitor_status, "ooo": ooo_status, "message":
+                                   message}
+
+                    print('POST OoO Status to Mediator Server...')
+                    mediator_post(med_url, profile)
+                    print('POST complete...')
+
+                    if monitor_user not in vmo_enabled_usrs:  # usr not in list
+                        vmo_enabled_usrs.append(profile)  # add user
+
                     else:
-                        print("User {0} does not have an active Out of Office alert"
-                              .format(email_address))
-                else:
-                    print("This User {0} is not in the monitor state"
-                          .format(email_address))
+                        print('user in vmo_enabled_user')
+
+                else:  # OoO autoReply is disabled
+
+                    print("User {0} : does not have active Out of Office "
+                          "alert".format(email_address))
+
+                    profile = {"email": email_address, "monitor":
+                               monitor_status, "ooo": ooo_status, "message":
+                                   message}
+                    if monitor_user not in vmo_enabled_usrs:  # usr not in list
+                        vmo_enabled_usrs.append(profile)  # add user
+                    else:
+                        print('user in vmo_enabled_user')
             else:
-                print("USER {0} NOT FOUND in MS GRAPH".format(email_address))
-    else:
-        print("There are currently no users in database")
+                # check list if user in it remove them since mon is now false
+                print("This User {0} is not in the monitor state"
+                      .format(email_address))
+        else:
+            print("USER {0} NOT FOUND in MS GRAPH".format(email_address))
 
+    else:  # NO USERS from MEDIATOR GET REQUEST - CHECK local list
 
+        # 1 - check if there are users in vmo_enabled_users list
+        if len(vmo_enabled_usrs) != 0:  # there are users in list
+            print('USER FOUND IN local list')
+            # 2 - parse through list checking ooo status
+            for u in vmo_enabled_usrs:
+                # print(u)
+                last_ooo_status = u['ooo']
+                email_address = u['email']
 
+                if u['monitor'] == 'True':
+                    print('check MS Graph for OOO status')
+                    ooo_status, message = auto_reply(
+                            token, email_address, mailbox_base_url)
+                    print('ooo status', ooo_status)
 
+                    if last_ooo_status == ooo_status:
+                        print('last ooo', last_ooo_status)
+                        print('ooo status', ooo_status)
 
+                        print('no change in OOO status')
+                    else:
+                        u['ooo'] = ooo_status
+                        u['message'] = " "
+
+                        # POST to MEDIATOR
+                        print('POST OoO Status to Mediator Server...')
+                        # mediator_post(med_url, profile)
+                        print('POST complete...')
+                        # update vmo uses with new ooo
+                        print('VMO USERS', vmo_enabled_usrs)
+
+        else:  # there are no users in the list
+            print("NO USERS FOUND in local user list")
 
