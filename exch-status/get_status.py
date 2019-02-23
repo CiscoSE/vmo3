@@ -101,30 +101,36 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
         # 1 - check if there are users in vmo_enabled_users list
         if len(vmo_enabled_usrs) != 0:  # there are users in list
             print('USER FOUND IN local list')
+
             # 2 - parse through list checking ooo status
             for u in vmo_enabled_usrs:
                 # print(u)
                 last_ooo_status = u['ooo']
                 email_address = u['email']
+                monitor_status = u['monitor']
 
+                # 3 - if monitor in list is true check OoO status
                 if u['monitor'] == 'True':
                     print('check MS Graph for OOO status')
                     ooo_status, message = auto_reply(
                             token, email_address, mailbox_base_url)
                     print('ooo status', ooo_status)
 
+                    # 4 - compare last ooo status to current ooo status
                     if last_ooo_status == ooo_status:
                         print('last ooo', last_ooo_status)
                         print('ooo status', ooo_status)
-
                         print('no change in OOO status')
                     else:
                         u['ooo'] = ooo_status
                         u['message'] = " "
 
-                        # POST to MEDIATOR
+                        profile = {"email": email_address, "monitor":
+                                   monitor_status, "ooo": ooo_status,
+                                   "message": message}
+                        # 4 - if ooo status changed POST to MEDIATOR
                         print('POST OoO Status to Mediator Server...')
-                        # mediator_post(med_url, profile)
+                        mediator_post(med_url, profile)
                         print('POST complete...')
                         # update vmo uses with new ooo
                         print('VMO USERS', vmo_enabled_usrs)
