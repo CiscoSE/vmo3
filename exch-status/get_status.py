@@ -13,7 +13,7 @@ This is the user status microservice, it will
 """
 
 from mail_setting import auto_reply, graph_check_user
-from api import mediator_post, listener_get, listener_reset
+from api import mediator_post, listener_get
 
 vmo_enabled_usrs = []
 
