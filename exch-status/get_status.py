@@ -122,6 +122,10 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                         print('ooo status', ooo_status)
                         print('no change in OOO status')
                     else:
+                        print('last ooo', last_ooo_status)
+                        print('ooo status', ooo_status)
+                        print('OOO status has changed...')
+
                         u['ooo'] = ooo_status
                         u['message'] = " "
 
@@ -131,7 +135,7 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                         # 4 - if ooo status changed POST to MEDIATOR
                         print('POST OoO Status to Mediator Server...')
                         mediator_post(med_url, profile)
-                        print('POST complete...')
+                        print('POST complete from vmo enabled list...')
                         # update vmo uses with new ooo
                         print('VMO USERS', vmo_enabled_usrs)
 

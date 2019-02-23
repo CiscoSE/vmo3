@@ -50,7 +50,7 @@ def auto_reply(tkn, email_addr, graph_base_url):
         response = requests.get(mailbox_url, data=payload, headers=headers)
         resp_json = response.json()
         print(response.text)
-        print(resp_json)
+        # print(resp_json)
         status = resp_json['status']
         # odata = resp_json['@odata.context']
         # int_msg = resp_json['internalReplyMessage']
