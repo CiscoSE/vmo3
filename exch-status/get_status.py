@@ -14,6 +14,7 @@ This is the user status microservice, it will
 
 from mail_setting import auto_reply, graph_check_user
 from api import mediator_post, listener_get
+import json
 
 vmo_enabled_usrs = []
 
@@ -49,7 +50,7 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
             print("USER {0} FOUND in MS AD".format(email_address))
 
             # 5 - should this user be monitored
-            if monitor_status == 'True':  # user supposed to be monitored
+            if monitor_status == "True":  # user supposed to be monitored
                 print(email_address, monitor_status)
 
                 # 6 - Query MS GRAPH for user OoO status
@@ -57,18 +58,29 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                     token, email_address, mailbox_base_url)
 
                 # 7 - if OoO is enabled - POST to MEDIATOR
-                if ooo_status != 'disabled':  # autoReply (OoO) is enabled
+                if ooo_status != "disabled":  # autoReply (OoO) is enabled
                     ooo_status = "True"  # normalize status
 
                     # 8 - add this user to local storage
                     # add ooo_status to vmo_enabled_usrs
 
-                    profile = {"email": email_address, "monitor":
-                               monitor_status, "ooo": ooo_status, "message":
-                                   message}
+                    profile = {
+                        "email": email_address,
+                        "monitor": monitor_status,
+                        "ooo": ooo_status,
+                        "message": message
+                    }
+
+                    profile_payload = {
+                        "email": email_address,
+                        "status": ooo_status,
+                        "message": message
+                    }
+
+                    profile_json = json.dumps(profile_payload)  # make JSON
 
                     print('POST OoO Status to Mediator Server...')
-                    mediator_post(med_url, profile)
+                    mediator_post(med_url, profile_json)
                     print('POST complete...')
 
                     if monitor_user not in vmo_enabled_usrs:  # usr not in list
@@ -82,9 +94,22 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                     print("User {0} : does not have active Out of Office "
                           "alert".format(email_address))
 
-                    profile = {"email": email_address, "monitor":
-                               monitor_status, "ooo": ooo_status, "message":
-                                   message}
+                    # profile = dict()
+
+                    # profile["email"] = email_address
+                    # profile["monitor"] = monitor_status
+                    # profile["ooo"] = ooo_status
+                    # profile["message"] = message
+
+                    profile = {
+                        "email": email_address,
+                        "monitor": monitor_status,
+                        "ooo": ooo_status,
+                        "message": message
+                    }
+
+                    json.dumps(profile)
+
                     if monitor_user not in vmo_enabled_usrs:  # usr not in list
                         vmo_enabled_usrs.append(profile)  # add user
                     else:
@@ -127,14 +152,26 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                         print('OOO status has changed...')
 
                         u['ooo'] = ooo_status
-                        u['message'] = " "
+                        u['message'] = ""
 
-                        profile = {"email": email_address, "monitor":
-                                   monitor_status, "ooo": ooo_status,
-                                   "message": message}
+                        profile = {
+                            "email" : email_address,
+                            "monitor" : monitor_status,
+                            "ooo" : ooo_status,
+                            "message" : message
+                        }
+
+                        profile_payload = {
+                            "email": email_address,
+                            "status": ooo_status,
+                            "message": message
+                        }
+                        profile_json = json.dumps(profile_payload)
+
+                        print('profile json', profile_json)
                         # 4 - if ooo status changed POST to MEDIATOR
                         print('POST OoO Status to Mediator Server...')
-                        mediator_post(med_url, profile)
+                        mediator_post(med_url, profile_json)
                         print('POST complete from vmo enabled list...')
                         # update vmo uses with new ooo
                         print('VMO USERS', vmo_enabled_usrs)
