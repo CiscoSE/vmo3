@@ -132,7 +132,7 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                 # print(u)
                 last_ooo_status = u['ooo']
                 email_address = u['email']
-                monitor_status = u['monitor']
+                # monitor_status = u['monitor']
 
                 # 3 - if monitor in list is true check OoO status
                 if u['monitor'] == 'True':
@@ -147,33 +147,34 @@ def usr_status(token, med_url, listen_api_url, mailbox_base_url):
                         print('ooo status', ooo_status)
                         print('no change in OOO status')
                     else:
+                        # 5 - change detected -  generate payload for MEDIATOR
                         print('last ooo', last_ooo_status)
                         print('ooo status', ooo_status)
                         print('OOO status has changed...')
 
+                        # update email_address in vmo users with new ooo
                         u['ooo'] = ooo_status
                         u['message'] = ""
 
-                        profile = {
-                            "email" : email_address,
-                            "monitor" : monitor_status,
-                            "ooo" : ooo_status,
-                            "message" : message
-                        }
+                        # normalize OoO status for MEDIATOR
+                        if ooo_status != "disabled":  # OoO is enabled
+                            ooo_profile_status = "True"  # normalize status
+                        else:
+                            ooo_profile_status = "False"  # normalize status
 
                         profile_payload = {
                             "email": email_address,
-                            "status": ooo_status,
+                            "status": ooo_profile_status,
                             "message": message
                         }
+
                         profile_json = json.dumps(profile_payload)
 
                         print('profile json', profile_json)
-                        # 4 - if ooo status changed POST to MEDIATOR
+                        # 6 - POST ooo status change to MEDIATOR
                         print('POST OoO Status to Mediator Server...')
                         mediator_post(med_url, profile_json)
                         print('POST complete from vmo enabled list...')
-                        # update vmo uses with new ooo
                         print('VMO USERS', vmo_enabled_usrs)
 
         else:  # there are no users in the list
