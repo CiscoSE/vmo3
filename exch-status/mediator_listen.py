@@ -7,24 +7,21 @@ Author: Clint Mann
 Description:
 This is the MEDIATOR LISTEN API microservice, it will
  + wait for a REST API POST that contains user email address
- and monitor status. It will then pass that information to
- get_status.py to check the automaticRepliesSetting
+ and monitor status. It will then be queried by get_status.py
+  to check the automaticRepliesSetting
  for the user mailbox
 """
 
 from flask import Flask, request
-from flask_restplus import Api, Resource
+# from flask_restplus import Api, Resource
 import jsonify
 import json
 
 
 app = Flask(__name__)
-#api = Api(app) # version='1.0',title='VMO3 REGISTER USE API', default='VMO3',default_label='VMO3 namespace', description='VMO3 API to register users')
 
 
 USER = {}
-
-print('mediator listen - started')
 
 
 @app.route('/', methods=['GET'])
@@ -35,14 +32,15 @@ def home():
 
 @app.route('/users', methods=['GET'])
 def getusers():
-    global USER
+    print('get user', USER)
     data = json.dumps(USER)
+    USER.clear()
     return data
 
 
 @app.route('/monitor', methods=['POST'])
 def monitorusers():
-    global USER
+
     if not request.is_json:
         return jsonify({"result": "Not JSON"}), 400
 
@@ -55,7 +53,6 @@ def monitorusers():
         # print(status)
         USER['email'] = email
         USER['status'] = status
-        print('users', USER)
         data = json.dumps(USER)
 
         return '''<h1>You would like to monitor user {} {}</h1>'''.format(email, status)
