@@ -13,6 +13,7 @@ import sys
 import requests
 import re
 
+
 def graph_check_user(tkn, graph_base_url):
 
     headers = {
