@@ -38,11 +38,13 @@ def mediator_post(mediator_url, status_payload):
         'Content-Type': 'application/json'
     }
 
-    response = requests.post(mediator_url, data=json.dumps(payload),
+    response = requests.post(mediator_url, json=payload,
                              headers=headers)
 
     # print('Mediator POST', response.text)
     data = response.json()
+    print(response.text)
+    print('POST REQUEST - Mediator data to send', payload)
     print('POST REQUEST - Mediator response', str(data))
 
 
