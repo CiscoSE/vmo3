@@ -11,7 +11,7 @@ This is the token microservice, it will
 
 import sys
 import requests
-
+import re
 
 def graph_check_user(tkn, graph_base_url):
 
@@ -54,7 +54,9 @@ def auto_reply(tkn, email_addr, graph_base_url):
         status = resp_json['status']
         # odata = resp_json['@odata.context']
         # int_msg = resp_json['internalReplyMessage']
-        ext_msg = resp_json['externalReplyMessage']
+        e_msg = resp_json['externalReplyMessage']
+        ext_rmsg = re.sub("\n", "", e_msg)  # remove carriage returns
+        ext_msg = re.sub("<.*?>", "", ext_rmsg)  # remove html tags
 
     except requests.exceptions.RequestException as e:
         print(e)
