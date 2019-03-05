@@ -47,7 +47,7 @@ def check_auto_reply(tkn, email_addr, graph_base_url):
     }
 
     try:
-        # check if resource - the email address exists - if so continue - else error message
+        # check the email address
         response = requests.get(mailbox_url, data=payload, headers=headers)
         resp_json = response.json()
         print(response.text)
