@@ -112,3 +112,4 @@ venv.bak/
 /vmo-mediator/vmo3.sqlite
 /exch-status/run.sh
 /wxt-status/test2.py
+/exchange-monitor/run.sh
