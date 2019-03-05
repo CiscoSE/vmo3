@@ -110,3 +110,4 @@ venv.bak/
 .idea/
 /vmo-mediator/package_config.ini
 /vmo-mediator/vmo3.sqlite
+/exch-status/run.sh
