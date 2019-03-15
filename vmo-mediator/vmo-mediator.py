@@ -329,10 +329,13 @@ def setup():
         except requests.exceptions.RequestException as e:
             print(e)
 
-        if response.status_code == 200:
-            data=response.text
-            print(str(data))
-            print("")
+        else:
+            print ("Response Code: "+response.status_code)
+            print ("Response: "+response.text)
+            if response.status_code == 200:
+                data=response.text
+                print(str(data))
+                print("")
 
 
     return jsonify({"result": "True"}), 200
