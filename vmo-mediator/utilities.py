@@ -65,6 +65,9 @@ def print_details(r):
     This function will dump all the data that is passed to the REST-API
 
     """
+    print("Source IP Address:")
+    print("------------------")
+    print(r.remote_addr)
     print("Headers:")
     print("--------")
     print(r.headers)
