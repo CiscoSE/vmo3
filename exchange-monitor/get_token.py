@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 """
-VMO3 - Token Microservice
+VMO3 - Get Token
 Author: Clint Mann
 
 Description:
-This is the token microservice, it will
- + get a token from Microsoft Graph API using Client Credentials
+Get a token from Microsoft Graph API using Client Credentials
 """
 
 import requests
