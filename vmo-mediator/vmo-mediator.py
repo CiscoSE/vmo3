@@ -330,7 +330,7 @@ def setup():
             print(e)
 
         else:
-            print ("Response Code: "+response.status_code)
+            print ("Response Code: "+str(response.status_code))
             print ("Response: "+response.text)
             if response.status_code == 200:
                 data=response.text
