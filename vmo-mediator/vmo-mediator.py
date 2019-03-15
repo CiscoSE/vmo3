@@ -146,6 +146,7 @@ def cleartables():
 # This route will display the user table
 @app.route('/syncdbs')
 def syncdbs():
+
     """
     Displays the user table
     @return: html page of the table
@@ -170,6 +171,8 @@ def syncdbs():
 @app.route("/toggle_status/<emailid>", methods=('GET', 'POST'))
 def toggle_status(emailid):
 
+    if WEBDEBUG:
+        print_details(request)
 
     print ("Toggling VMO Status for: "+emailid)
 
@@ -272,7 +275,7 @@ def setstatus():
     print (jsonmsg)
 
     try:
-        resp = requests.post(apistring,data=json.dumps(jsonmsg),headers=headers)
+        resp = requests.post(apistring,data=json.dumps(jsonmsg),headers=headers,timeout=10)
     except requests.exceptions.RequestException as e:
         print(e)
         return jsonify({"result":str(e)}),403
@@ -293,6 +296,9 @@ def setstatus():
 @app.route('/api/setup', methods=['POST','GET'])
 def setup():
 
+    if WEBDEBUG:
+        print_details(request)
+
     data = db.search_db(dbname, "users")
     for i in data:
         print ("Send Register Event to Email Server for: "+i[2]+" to "+i[6])
@@ -309,11 +315,17 @@ def setup():
         user['email'] = i[2]
         user['status'] = i[6]
 
+        test_user = {
+            "email": i[2],
+            "status": i[6]
+        }
 
-        print (user)
+
+        print ("Original Dict: "+json.dumps(user))
+        print ("Clint's Format: "+json.dumps(test_user))
         try:
             response = requests.post(apistring, data=json.dumps(user),
-                                     headers=headers)
+                                     headers=headers, timeout=10)
         except requests.exceptions.RequestException as e:
             print(e)
 
