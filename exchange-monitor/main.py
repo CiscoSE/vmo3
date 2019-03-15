@@ -55,7 +55,8 @@ VMOusers = []
 @app.route("/")
 def main():
     print(str(datetime.now())+": Processing /monitor functionality")
-    return jsonify({"result": "True"}), 200
+    #return jsonify({"result": "True"}), 200
+    return "EXCHANGE OOO HOME PAGE"
 
 
 @app.route("/monitor", methods=['POST'])
