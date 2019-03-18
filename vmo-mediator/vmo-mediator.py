@@ -64,7 +64,20 @@ def synchronize_dbs():
     # Make a call to the voice mail application to get all users
     apistring = vmip+"/ucxn/users"
 
-    resp = requests.post(apistring)
+    print ("API String: "+apistring)
+    try:
+
+        resp = requests.get(apistring)
+    except requests.exceptions.RequestException as e:
+        print ("ERROR: Error when attempting to synchronize database: "+str(resp.reason))
+
+        return
+
+    if resp.status_code != 200:
+        print ("ERROR: Synchronization failed: "+str(resp.reason))
+        return
+
+    print (resp)
     data=resp.json()
     print(str(data))
 
