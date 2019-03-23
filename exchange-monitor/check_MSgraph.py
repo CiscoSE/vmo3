@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 
 """
-VMO3 - AutoReply Microservice
+VMO3 - check_MSgraph
 Author: Clint Mann
 
 Description:
-This is the token microservice, it will
- + check the automaticRepliesSetting for the user mailbox
+These functions will query Azure Active Directory.
+
+The function - check_active_dir_users -
+will get all available users.
+
+The function - check_auto_reply -
+will determine the automaticRepliesSetting
+or "Out of Office" status for a user mailbox.
 """
 
 import sys
@@ -14,7 +20,7 @@ import requests
 import re
 
 
-def check_activedir_user(tkn, graph_base_url):
+def check_activedir_users(tkn, graph_base_url):
 
     headers = {
         'Authorization': "Bearer " + str(tkn),
@@ -47,10 +53,11 @@ def check_auto_reply(tkn, email_addr, graph_base_url):
     }
 
     try:
-        # check the email address
+        # check if resource - the email address exists -
+        # if so continue - else error message
         response = requests.get(mailbox_url, data=payload, headers=headers)
         resp_json = response.json()
-        print(response.text)
+        # print(response.text)
         # print(resp_json)
         status = resp_json['status']
         # odata = resp_json['@odata.context']
