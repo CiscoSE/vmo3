@@ -2,7 +2,7 @@ import configparser
 import requests
 import datetime
 from utilities import print_details
-from flask import Flask,jsonify,request,render_template,redirect
+from flask import Flask,jsonify,request,render_template,redirect,flash
 import json
 import db
 
@@ -11,6 +11,7 @@ print("VMO3 Mediator Starting...\n")
 print("Configuration Options:")
 
 app = Flask(__name__,static_url_path='/static')
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 # Open up the configuration file and get all application defaults
 
@@ -68,13 +69,14 @@ def synchronize_dbs():
     try:
 
         resp = requests.get(apistring)
+        print (resp)
     except requests.exceptions.RequestException as e:
-        print ("ERROR: Error when attempting to synchronize database: "+str(resp.reason))
+        flash("ERROR: Error when attempting to synchronize database: "+str(e))
 
         return
 
     if resp.status_code != 200:
-        print ("ERROR: Synchronization failed: "+str(resp.reason))
+        flash ("ERROR: Synchronization failed to ("+apistring+"): "+" Status Code ("+str(resp.status_code)+"): "+str(resp.reason))
         return
 
     print (resp)
@@ -223,16 +225,17 @@ def toggle_status(emailid):
 
     print(user)
     try:
-        response = requests.post(apistring, data=json.dumps(user),
+        resp = requests.post(apistring, data=json.dumps(user),
                                  headers=headers)
     except requests.exceptions.RequestException as e:
+        flash("ERROR: Error when attempting to toggle status of user : "+str(e))
         print(e)
 
-    if response.status_code == 200:
-        data=response.text
+    if resp.status_code == 200:
+        data=resp.text
         print(str(data))
-
-
+    else:
+        flash ("ERROR: Synchronization failed to ("+apistring+"): "+" Status Code ("+str(resp.status_code)+"): "+str(resp.reason))
 
     return redirect("/", code=302)
 
@@ -244,10 +247,11 @@ def setstatus():
     if WEBDEBUG:
         print_details(request)
 
-    if not request.is_json:
-        return jsonify({"result": "Not JSON"}),400
+#    if not request.is_json:
+#        return jsonify({"result": "Not JSON"}),400
 
     req_data = request.get_json(force=True, silent=True)
+
 
     try:
         email = req_data['email']
@@ -290,9 +294,10 @@ def setstatus():
     try:
         resp = requests.post(apistring,data=json.dumps(jsonmsg),headers=headers,timeout=10)
     except requests.exceptions.RequestException as e:
-        print(e)
+        flash("ERROR: Error when attempting to set status: "+str(e))
         return jsonify({"result":str(e)}),403
 
+    print (resp.status_code)
     if resp.status_code == 200:
         data=resp.json()
         print(str(data))
@@ -304,6 +309,8 @@ def setstatus():
 
         return jsonify({"result":"True"}),200
     else:
+        print("ItExecuted")
+        flash ("ERROR: Unable to set status failed to ("+apistring+"): "+" Status Code ("+str(resp.status_code)+"): "+str(resp.reason))
         return jsonify({"result": "Internal Error"}),resp.status_code
 
 @app.route('/api/setup', methods=['POST','GET'])
@@ -311,6 +318,9 @@ def setup():
 
     if WEBDEBUG:
         print_details(request)
+
+
+
 
     data = db.search_db(dbname, "users")
     for i in data:
