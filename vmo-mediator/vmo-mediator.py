@@ -108,6 +108,7 @@ def synchronize_dbs():
                 print ("Updating record: "+emailid)
 
                 ret, msg = db.update_database(dbname, "users", updatestring, "Alias='" + emailid + "'")
+                print ("Return = "+str(ret) + " "+str(msg))
         else:
             print ("Did not find existing record")
             ret, msg = db.insert_into_database(dbname, "users", ObjectId=user['ObjectId'], Alias=user['Alias'], Extension=user['Extension'],CallHandlerObjectID=user['CallHandlerObjectId'],AlternateGreetingEnabled=user['AlternateGreetingEnabled'],Active="True")
