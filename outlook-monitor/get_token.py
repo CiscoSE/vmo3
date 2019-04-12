@@ -5,7 +5,9 @@ VMO3 - Get Token
 Author: Clint Mann
 
 Description:
-Get a token from Microsoft Graph API using Client Credentials
+This function will use the POST method to retrieve
+a token from Microsoft Graph API using
+Client Credentials
 """
 
 import requests
