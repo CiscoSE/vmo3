@@ -24,10 +24,11 @@ Our solution will leverage the following Cisco technologies
 
 * [Cisco Unity Connection (UCXN)](https://www.cisco.com/c/en/us/products/unified-communications/unity-connection/index.html)
 * [Cisco Unified Communications Manager (CUCM)](https://www.cisco.com/c/en/us/products/unified-communications/unified-communications-manager-callmanager/index.html)
+* [Cisco WebEx Teams](https://www.webex.com/products/teams/index.html)
 
 ## Team Members
 
-* Chris Bogdon <cbogdon@cisco.com> - Atlantic Enterprise Account
+* Chris Bogdon <cbogdon@cisco.com> - Trans PNC
 * Marty Sloan <masloan@cisco.com> - Midwest Atlantic Enterprise
 * Clint Mann <climann2@cisco.com> - PA Liberty Select
 
@@ -50,12 +51,15 @@ Provide a brief overview of how to use the solution  -->
 
 ## Installation
 
-How to install or setup the project for use.
+Since there are three distinct modules required, the detailed information for installation is included in the documentation links provided in the next section.
 
 
 ## Documentation
 
-Pointer to reference documentation for this project.
+More detailed information and documentation can be provided in the following links:
+
+* [outlook-monitor](outlook-monitor/README.md)
+* [vmo-mediator](vmo-mediator/README.md)
 
 
 ## License
