@@ -51,7 +51,7 @@ This parameter is either ```True``` or ```False```.   It represents if we turn o
 ## Executing the Application
 To start the application, once the requirents are installed (see above), you can do the following:
 
-```python vmo-mediate.py```
+```python vmo-mediator.py```
 
 You will then see the following output:
 
