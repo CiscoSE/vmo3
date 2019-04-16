@@ -285,6 +285,7 @@ def setstatus():
 
     jsonmsg = {}
     jsonmsg['action']=status
+    jsonmsg['extension']=msg['Extension']
     if message:
         jsonmsg['message']=message
 
