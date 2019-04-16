@@ -1,0 +1,3 @@
+[submodule "uc-connector"]
+	path = uc-connector
+	url = https://github.com/sloan58/vmo3-uc.git
