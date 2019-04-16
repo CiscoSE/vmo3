@@ -62,6 +62,10 @@ if database == False:
 
 
 def synchronize_dbs():
+    """
+    This function call will synchonize the database with the UCXN Server
+    :return:
+    """
     # Make a call to the voice mail application to get all users
     apistring = vmip+"/ucxn/users"
 
@@ -134,8 +138,6 @@ def home():
     return render_template("list-users.html", rows=data, ipaddress=vmip, lastsynchronized=lastsynchronize)
 
 
-
-
 # Route point for displaying the about message
 @app.route('/about')
 def about():
@@ -164,8 +166,8 @@ def cleartables():
 def syncdbs():
 
     """
-    Displays the user table
-    @return: html page of the table
+    Synchronizes the user data base table with the UCXN Server
+    @return: redirect to "/" with a status code of 302
     """
     # Make a call to the voice mail application to get all users
     synchronize_dbs()
@@ -186,6 +188,12 @@ def syncdbs():
 # This route will toggle the status of a user that is selected
 @app.route("/toggle_status/<emailid>", methods=('GET', 'POST'))
 def toggle_status(emailid):
+    '''
+    This function will toggle the VMO Status for a particular user.
+
+    :param emailid: The emailid id of the user you want to toggle
+    :return: redirect to "/" with a Status Code of 302
+    '''
 
     if WEBDEBUG:
         print_details(request)
@@ -206,7 +214,7 @@ def toggle_status(emailid):
     print (msg['CallHandlerObjectId'])
     ret, msg = db.update_database(dbname, "users", updatestring, "Alias='" + emailid + "'")
 
-    #TODO: Make a call to the mail exchange server to register a hook
+
     if value == "True":
         print ("Submitting a request to set an alert on: "+emailid)
     else:
@@ -244,22 +252,32 @@ def toggle_status(emailid):
 # API Handler to Change the Out of Office Status
 @app.route('/api/setstatus', methods=['POST','GET'])
 def setstatus():
+    '''
+    This function will implement the setstatus function.   The setstatus will be used anytime the mail server wants to
+    change the status of the a user.   For example, if they go from Out Of Office = True or Out Of Office = False.
+
+    :return: {"result":"True"} and Status Code 200 if the request was successful
+             {"result":"Invalid JSON"} and Status Code 400 if the inbound JSON is incorrect
+             {"result":"Not Found"} and Status Code 404 if the user was not found in the database
+             {"result":str(e)} and Status Code 403 if a generic error occurred and the 'e' is the error message
+             {"result": "Internal Error"} and any Status Code if another web error occured when communicating to the mail gateway
+
+    '''
 
     if WEBDEBUG:
         print_details(request)
 
-#    if not request.is_json:
-#        return jsonify({"result": "Not JSON"}),400
 
     req_data = request.get_json(force=True, silent=True)
 
-
+    # Check to see if the email and status fields are included in the inbound JSON
     try:
         email = req_data['email']
         status = req_data['status']
     except (KeyError, TypeError, ValueError):
         return jsonify({"result":"Invalid JSON"}),400
 
+    # Check to see if the OOO message is included
     try:
         message = req_data['message']
     except (KeyError, TypeError, ValueError):
@@ -271,12 +289,14 @@ def setstatus():
 
     print("Setting the status for: "+email+" to: "+ status)
 
+    # Search the database table for the user
     ret, msg = db.search_database(dbname, "users", "Alias", email)
 
     if not ret:
         return jsonify({"result":"Not Found"}),404
 
 
+    # Create the API call to send to UCXN
     apistring = vmip+"/ucxn/users/"+msg['CallHandlerObjectId']+"/greeting"
 
     headers = {
@@ -293,6 +313,7 @@ def setstatus():
     print (apistring)
     print (jsonmsg)
 
+    # Try to post the message to the UCXN server
     try:
         resp = requests.post(apistring,data=json.dumps(jsonmsg),headers=headers,timeout=10)
     except requests.exceptions.RequestException as e:
@@ -317,14 +338,21 @@ def setstatus():
 
 @app.route('/api/setup', methods=['POST','GET'])
 def setup():
+    '''
+    This function implements the setup API call.   This call is used first by the mail server gateway to receive all users
+    within the database table.   Once the call is executed, this function iterates through all users and sends the information
+    along with if the VMO function is enabled and disabled.   It is normally called when the mail interface first starts up.
+
+    :return: JSON {"result": "True"} and a web status code 200
+    '''
 
     if WEBDEBUG:
         print_details(request)
 
-
-
-
+    # Search for all the records within the "users" table.
     data = db.search_db(dbname, "users")
+
+    # For each record in the database, send a message to the email server to register the user
     for i in data:
         print ("Send Register Event to Email Server for: "+i[2]+" to "+i[6])
 
@@ -340,14 +368,6 @@ def setup():
         user['email'] = i[2]
         user['status'] = i[6]
 
-        test_user = {
-            "email": i[2],
-            "status": i[6]
-        }
-
-
-        print ("Original Dict: "+json.dumps(user))
-        print ("Clint's Format: "+json.dumps(test_user))
         try:
             response = requests.post(apistring, data=json.dumps(user),
                                      headers=headers, timeout=10)
