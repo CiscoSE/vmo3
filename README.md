@@ -60,6 +60,7 @@ More detailed information and documentation can be provided in the following lin
 
 * [outlook-monitor](outlook-monitor/README.md)
 * [vmo-mediator](vmo-mediator/README.md)
+* [uc-connector](https://github.com/sloan58/vmo3-uc/blob/master/README.md)
 
 
 ## License
