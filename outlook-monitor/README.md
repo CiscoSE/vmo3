@@ -190,30 +190,30 @@ In your Azure portal
 
 Choose **Azure Active Directory > App registrations > New application registration**
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/App_registration.gif" width="800" height="500" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/App_registration.gif" width="800" height="500" />
 
 
 Give your application a name, Sign-on  URL and click **Create**
 
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Create_app.gif" width="300" height="300" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Create_app.gif" width="300" height="300" />
 
  
 Next you will need to generate a key for you application to use. 
 Click **Settings > Keys**
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Settings_generate_key.gif" width="800" height="500" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Settings_generate_key.gif" width="800" height="500" />
 
 
 Give your Key a Description and Expiration time and click **Save** to generate the key
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Keys.gif" width="500" height="200" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Keys.gif" width="500" height="200" />
 
  
 Our application with be interacting with Microsoft Graph via REST APIs. We will want to assign the appropriate level of permissions to grant acces only to the APIs we need and nothing more. 
 Do this by checking the box next to the access you would like to assign. 
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Required_permission.gif" width="800" height="400" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Required_permission.gif" width="800" height="400" />
 
 
 For this application we are going to enable 1 permission for Azure AD and three permissions for Microsoft Graph.
@@ -221,7 +221,7 @@ For this application we are going to enable 1 permission for Azure AD and three 
 **Windows Azure Active Directory API Permissions**
 1. Read directory data
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Enable_Access_AzureAD.gif" width="800" height="400" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Enable_Access_AzureAD.gif" width="800" height="400" />
 
 
 **Microsoft Graph API Permissions**
@@ -229,12 +229,12 @@ For this application we are going to enable 1 permission for Azure AD and three 
 2. Read all user mailbox settings
 3. Read directory data
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Enable_Access_Graph.gif" width="800" height="900" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Enable_Access_Graph.gif" width="800" height="900" />
 
  
 Finally you must click **Grant permissions** in order for your choices to take affect.
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Grant_permissions.gif" width="600" height="300" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Grant_permissions.gif" width="600" height="300" />
 
 
 For more information take a look at this [tutorial](https://docs.microsoft.com/en-us/azure/active-directory-b2c/tutorial-register-applications#register-a-web-app)
@@ -254,14 +254,14 @@ Under the **Deploy** menu choose GitHub as your Deployment method. This will lin
 containing the code.
 
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Heroku_GitHub_deploy.gif" width="900" height="400" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Heroku_GitHub_deploy.gif" width="900" height="400" />
 
 Under the **Settings** menu, make sure to add in the Config variables. 
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Heroku_variables.gif" width="800" height="300" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Heroku_variables.gif" width="800" height="300" />
 
 Back under the **Deploy** menu scroll down the **Manual Deploy** to deploy the application
 
-<img src= "https://github.com/clintmann/vmo3/tree/master/outlook-monitor/images/Heroku_manual_deploy.gif" width="950" height="300" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Heroku_manual_deploy.gif" width="950" height="300" />
 
 
