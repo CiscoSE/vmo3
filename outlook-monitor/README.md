@@ -25,15 +25,14 @@ to be changed dynamically.
 
 #### Get MS Graph Authorization Token
 
-**DESCRIPTION**
-This API call will be used to get an Authorization Token that your application will use to make requests to 
+**Description:** This API call will be used to get an Authorization Token that your application will use to make requests to 
 Microsoft Graph.
 
-**PATH:** https://login.microsoftonline.com/< your TENANT ID >/oauth2/token
+**Path:** https://login.microsoftonline.com/< your TENANT ID >/oauth2/token
 
-**METHOD:** POST
+**Method:** POST
 
-**PARAMETERS:** 
+**Parameters:** 
 ```bash
 client_id= < your client id >
 client_secret= < your client secret >
@@ -49,7 +48,7 @@ headers = {
     }
 ```
 
-**RETURN:** 
+**Return:** 
 ```bash
 {
     "token_type": "Bearer",
@@ -64,21 +63,20 @@ headers = {
 
 
 #### Get AD Users
-**Description**
-This API call will be used to query Active Directory for users.
+**Description:** This API call will be used to query Active Directory for users.
 
-**PATH:** https://graph.microsoft.com/v1.0/users
+**Path:** https://graph.microsoft.com/v1.0/users
 
-**METHOD:** GET
+**Method:** GET
 
-**PARAMETERS:** 
+**Parameters:** 
 ```bash
     headers = {
         'Authorization': "Bearer " + < your token>
     }
 ```
 
-**RETURN:**
+**Return:**
 
 ```bash
 {
@@ -102,28 +100,27 @@ This API call will be used to query Active Directory for users.
 
 
 #### Get Mailbox Automatic Reply Setting
-**Description**
-This API call will be used to get the mailbox Automatic Reply Setting for a particular user.
+**Description** This API call will be used to get the mailbox Automatic Reply Setting for a particular user.
 
-**PATH:** https://graph.microsoft.com/v1.0/users/user@domain.com/mailboxSettings/automaticRepliesSetting
+**Path:** https://graph.microsoft.com/v1.0/users/user@domain.com/mailboxSettings/automaticRepliesSetting
 
-**METHOD:** GET
+**Method:** GET
 
-**PARAMETERS:** 
+**Parameters:** 
 ```bash
     headers = {
         'Authorization': "Bearer " + < your token >
     }
 ```
 
-**RETURN:**
+**Return:**
 ```bash
 {
     "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('user%40domain.com')/mailboxSettings/automaticRepliesSetting",
     "status": "scheduled",
     "externalAudience": "none",
-    "internalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never return. </div>\n</body>\n</html>\n",
-    "externalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never return. </div>\n</body>\n</html>\n",
+    "internalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never Return. </div>\n</body>\n</html>\n",
+    "externalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never Return. </div>\n</body>\n</html>\n",
     "scheduledStartDateTime": {
         "dateTime": "2019-04-17T16:00:00.0000000",
         "timeZone": "UTC"
@@ -137,34 +134,32 @@ This API call will be used to get the mailbox Automatic Reply Setting for a part
 
 
 #### Mediator Sync API
-**Description:** 
-This API call is used to syncronize with the vmo-mediator microservice. 
-**/api/**
+**Description:** This API call is used to syncronize with the vmo-mediator microservice. 
+**Path:** /
 
-**METHOD:** GET
+**Method:** GET
 
-**PARAMETERS:** None
+**Parameters:** None
 
-**RETURN:** 200 OK
+**Return:** 200 OK
 
 
 
 #### Mediator Monitor API
-**Description:** 
-This API call is used by the vmo-mediator to POST a monitor request. 
+**Description:** This API call is used by the vmo-mediator to POST a monitor request. 
 
-**/api/monitor**
+**Path:** /monitor
 
-**METHOD:** POST
+**Method:** POST
 
-**PARAMETERS:**
+**Parameters:**
 ```bash
 {
     "email" : "user@domain.com",
     "status" : "True"
 }	
 ```
-**RETURN:**
+**Return:**
 ```bash
 <h1>You would like to monitor user@domain.com True</h1>
 ```
