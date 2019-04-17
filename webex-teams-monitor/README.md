@@ -1,1 +1,0 @@
-More integration to Cisco Webex Teams is in the works. 
