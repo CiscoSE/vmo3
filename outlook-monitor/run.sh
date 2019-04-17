@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 echo
-echo "################################################"
-echo "Thank you for using the Exchange Monitor App "
+echo "#####################################################"
+echo "Thank you for using the outlook-monitor microservice "
 echo "--"
 echo "This script will collect environment variables"
 echo "for the main.py script"
-echo "################################################"
+echo "######################################################"
 echo
 
 echo "Press Enter to continue..."
