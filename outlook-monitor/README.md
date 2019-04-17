@@ -236,6 +236,11 @@ For more information take a look at this [tutorial](https://docs.microsoft.com/e
 
 ## Executing the Application
 
+Option 1: Local
+run.sh will allow users to enter the necessary variables and execute outlook-monitor locally. This is a great option for testing and 
+if all the microservices (vmo-mediator and uc-connector) are not running external to your network.  
+
+Option 2: PaaS - recommended
 This microservice was deployed onto the [Heroku](https://www.heroku.com/) cloud platform. 
 
 Here is a fantastic [example](https://github.com/datademofun/heroku-basic-flask) of how to deploy a 
