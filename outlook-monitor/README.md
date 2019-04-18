@@ -25,7 +25,7 @@ Let's take a look at the work flow. The diagram below is not exhaustive, however
 the components that make up this microservice and their roles. 
 
 
-<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Outlook_monitor_workflow.gif" width="600" height="300" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Outlook_monitor_workflow.gif" />
 
 
 1.  This microservice can be executed locally by executing the run.sh bash script and entering your variables at the 
