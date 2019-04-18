@@ -30,8 +30,8 @@ the components that make up this microservice and their roles.
 
 1.  This microservice can be executed locally by executing the run.sh bash script and entering your variables at the 
 prompts. It can also be executed in a PaaS environment. For our testing, we used the Heroku cloud platform. Instructions 
-for executing this microservice in Heroku are listed below in the [Executing the Application](##Executing the Application) 
-section
+for executing this microservice in Heroku are listed below in the 
+<a href="#executing-the-application">Executing the Application</a> section
 
 2. main.py is the Main Module for this microservice. 
 
