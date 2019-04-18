@@ -33,9 +33,9 @@ prompts. It can also be executed in a PaaS environment. For our testing, we used
 for executing this microservice in Heroku are listed below in the 
 <a href="#executing-the-application">Executing the Application</a> section
 
-2. main.py is the Main Module for this microservice. 
+2. The variable values are sent to main.py, which is the Main Module for this microservice. 
 
-3. After reading in the variables, main.py enables MEDIATOR SYNC API which is simply a URL, and waits.
+3. After reading in the variable values, main.py enables MEDIATOR SYNC API which is simply a URL, and waits.
  
 4. A user browse to the MEDIATOR SYNC API URL will trigger a sync up with the vmo-mediator microservice. 
 
@@ -46,7 +46,7 @@ by initiating a simple GET request to the vmo-mediator URL.
 
 7. If the vmo-mediator is available and functioning properly it will respond with a 200 OK
 
-8. The response from the vmo-mediator is send back to main.py to be processed. 
+8. The response from the vmo-mediator is sent back to main.py to be processed. 
 
 9. If the response from vmo-mediator it is a 200 OK, main.py will call the auth_token function in the get_token.py module. 
 main.py will also schedule this "get token" workflow to run every 58 minutes in order for their to alway be an active 
