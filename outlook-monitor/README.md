@@ -2,24 +2,31 @@
 
 ## Description
 Outlook-monitor is a Python Flask microservice that is one piece of the VMO<sup>3</sup> application. It listens for 
-the vmo-mediator microservice to specify an Active Directory user to either start or stop monitoring. Outlook-monitor 
+the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
+microservice to specify an Active Directory user to either start or stop monitoring. Outlook-monitor 
 queries Microsoft Graph to determine if a users exists in Microsoft Azure Active Directory and then checks the 
 Office 365 Outlook/Exchange Automatic Replies (Out of Office) status of that user. 
 
 ## Functional Details
-Outlook-monitor begins by checking if the vmo-mediator microservice is reachable. If reachability is
-established a function is run to query Microsoft Graph for an Authorization Token. This token will expire in 1 hr, so 
-the function is scheduled to request a new token approximately every 58 minutes to ensure there is always an active 
-Authorization Token. Once a token has been received, outlook-monitor listens for a POST request from vmo-mediator.
+Outlook-monitor begins by checking if the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> microservice is 
+reachable. If reachability isestablished a function is run to query Microsoft Graph for an Authorization Token. This 
+token will expire in 1 hr, so the function is scheduled to request a new token approximately every 58 minutes to ensure 
+there is always an active Authorization Token. Once a token has been received, outlook-monitor listens for a POST request 
+from <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>.
 
-When a POST is received from vmo-mediator, outlook-monitor will parse the request for the users email address 
-and status. The status field indicates whether vmo-mediator wants to start or stop monitoring this user. 
-If status is True, outlook-monitor makes an API call to Microsoft Graph to verify that the user contained in the 
-request exist in Active Directory and then will make a second API call to check that users Outlook Automatic Replies 
-setting. This status along with the text from the users Out of Office message is sent to the vmo-mediator.
+When a POST is received from 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>, 
+outlook-monitor will parse the request for the users email address and status. The status field indicates whether 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> wants to 
+start or stop monitoring this user.  If status is True, outlook-monitor makes an API call to Microsoft Graph to verify 
+that the user contained in the request exist in Active Directory and then will make a second API call to check that users 
+Outlook Automatic Replies setting. This status along with the text from the users Out of Office message is sent to the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>.
 
-Continuous, real-time interaction with vmo-mediator allows for users to be added and their monitor status 
-to be changed dynamically. 
+Continuous, real-time interaction with 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> allows for 
+users to be added and their monitor status to be changed dynamically. 
 
 Let's take a look at the work flow. The diagram below is not exhaustive, however, it will help explain at a high level 
 the components that make up this microservice and their roles. 
@@ -39,19 +46,22 @@ for executing this microservice in Heroku are listed below in the
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR SYNC API</a> 
 which is simply a URL, and waits.
  
-4. A user browse to the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR SYNC API</a> 
- URL will trigger a sync up with the vmo-mediator microservice. 
+4. A user browse to the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR SYNC API</a> URL will 
+trigger a sync up with the vmo-mediator microservice. 
+
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Sync_URL.gif" />
 
 5. The mediator_sync.py module is called. 
 
-6. The purpose of mediator_sync.py is to determine if the vmo-mediator microservice is accessible. It accomplishes this
+6. The purpose of mediator_sync.py is to determine if the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> microservice is accessible. It accomplishes this
 by initiating a simple GET request to the vmo-mediator URL. 
 
-7. If the vmo-mediator is available and functioning properly it will respond with a 200 OK
+7. If the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> is available and functioning properly it will respond with a 200 OK
 
-8. The response from the vmo-mediator is sent back to main.py to be processed. 
+8. The response from the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> is sent back to main.py to be processed. 
 
-9. If the response from vmo-mediator it is a 200 OK, main.py will call the auth_token function in the get_token.py module. 
+9. If the response from <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> it is a 200 OK, main.py will call the auth_token function in the get_token.py module. 
 main.py will also schedule this "get token" workflow to run every 58 minutes in order for their to alway be an active 
 token available. 
 
@@ -71,11 +81,11 @@ token available.
 start-up it will not. 
 
     12b. If the process_users function finds users in VMOusers, it will call the post_mediator function in mediator_post.py
-which will post the user information to the vmo-mediator 
+which will post the user information to the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR POST API</a> .
 
 13. When the VMO<sup>3</sup> application the vmo-mediator microservice will POST the first user to be monitored to the 
-<a href="#mediator-monitor-api">MEDIATOR MONITOR API</a>. Once the application is up and running, the vmo-mediator will 
+<a href="#mediator-monitor-api">MEDIATOR MONITOR API</a>. Once the application is up and running, the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> will 
 POST request to the <a href="#mediator-monitor-api">MEDIATOR MONITOR API</a> to monitor new users or make a request to 
 stop monitoring existing users. The POST request will contain the users email address and monitor status.
 
@@ -86,7 +96,7 @@ stop monitoring existing users. The POST request will contain the users email ad
     }
     ```
 
-14. The monitor_users function in main.py checks if there was a POST from vmo-mediator. If there was a POST, the data 
+14. The monitor_users function in main.py checks if there was a POST from <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>. If there was a POST, the data 
 is parsed to extract the users email address and monitor status.
 
 15. monitor_users then calls the check_activedir_users function in the checkMSgraph.py module.
@@ -101,7 +111,7 @@ is parsed to extract the users email address and monitor status.
 17. The MS Graph <a href="#get-users-in-my-organization">GET users in my organization API</a> will respond with the users in Active Directory. 
 
 18. The data is send back to the monitor_users function where it is parsed to determine if the email address in the  
-vmo-mediator POST exists in Active Directory.
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> POST exists in Active Directory.
 
 19. If the email address exist in Active Directory and the monitor status of the user from vmo-mediator is set to TRUE, 
 the user and their status is added to VMOusers.
@@ -144,7 +154,7 @@ so no action is taken.
 
 24. If, however, the status does not match what is in VMOusers for the particular user, this indicates that the user 
 has made a change to their AutoReplySettings or Out of Office status and we need to take action to alert the 
-vmo-mediator microservice.
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> microservice.
 
 25. A POST request will be made to the 
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR POST API</a> to alert the 
