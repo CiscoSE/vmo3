@@ -35,9 +35,12 @@ for executing this microservice in Heroku are listed below in the
 
 2. The variable values are sent to main.py, which is the Main Module for this microservice. 
 
-3. After reading in the variable values, main.py enables MEDIATOR SYNC API which is simply a URL, and waits.
+3. After reading in the variable values, main.py enables 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR SYNC API</a> 
+which is simply a URL, and waits.
  
-4. A user browse to the MEDIATOR SYNC API URL will trigger a sync up with the vmo-mediator microservice. 
+4. A user browse to the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR SYNC API</a> 
+ URL will trigger a sync up with the vmo-mediator microservice. 
 
 5. The mediator_sync.py module is called. 
 
@@ -52,7 +55,8 @@ by initiating a simple GET request to the vmo-mediator URL.
 main.py will also schedule this "get token" workflow to run every 58 minutes in order for their to alway be an active 
 token available. 
 
-10. The auth_token function will make a POST request to the Microsoft Graph Get Token API to get an Authorization Token.
+10. The auth_token function will make a POST request to the Microsoft Graph 
+<a href="#get-ms-graph-authorization-token">GET Authorization Token API</a> to get an Authorization Token.
 
     ```bash
     https://login.microsoftonline.com/{tenantID}/oauth2/token
@@ -67,12 +71,13 @@ token available.
 start-up it will not. 
 
     12b. If the process_users function finds users in VMOusers, it will call the post_mediator function in mediator_post.py
-which will post the user information to the vmo-mediator MEDIATOR POST API.
+which will post the user information to the vmo-mediator 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR POST API</a> .
 
 13. When the VMO<sup>3</sup> application the vmo-mediator microservice will POST the first user to be monitored to the 
-MONITOR API. Once the application is up and running, the vmo-mediator will POST request to the MONITOR API to monitor
-new users or make a request to stop monitoring existing users. The POST request will contain the users email address and
-monitor status.
+<a href="#mediator-monitor-api">MEDIATOR MONITOR API</a>. Once the application is up and running, the vmo-mediator will 
+POST request to the <a href="#mediator-monitor-api">MEDIATOR MONITOR API</a> to monitor new users or make a request to 
+stop monitoring existing users. The POST request will contain the users email address and monitor status.
 
     ```bash
     {
@@ -81,22 +86,22 @@ monitor status.
     }
     ```
 
-14. The monitor_users function in main.py checks if there was anything POSTED from vmo-mediator. If there was the data 
+14. The monitor_users function in main.py checks if there was a POST from vmo-mediator. If there was a POST, the data 
 is parsed to extract the users email address and monitor status.
 
 15. monitor_users then calls the check_activedir_users function in the checkMSgraph.py module.
 
-16. The check_activedir_users function will the send a GET request to the MS Graph Check AutoReply API to get the 
-users in Active Directory.
+16. The check_activedir_users function will the send a GET request to the MS Graph 
+<a href="#get-users-in-my-organization">GET users in my organization API</a> to get the users in Active Directory.
 
     ```bash
     https://graph.microsoft.com/v1.0/users
     ```
 
-17. The MS Graph Check AutoReply API will respond with the users in Active Directory. 
+17. The MS Graph <a href="#get-users-in-my-organization">GET users in my organization API</a> will respond with the users in Active Directory. 
 
-18. The data is send back to the monitor_users function where it is parsed to determine if the email address POSTED 
-from vmo-mediator exists in Active Directory.
+18. The data is send back to the monitor_users function where it is parsed to determine if the email address in the  
+vmo-mediator POST exists in Active Directory.
 
 19. If the email address exist in Active Directory and the monitor status of the user from vmo-mediator is set to TRUE, 
 the user and their status is added to VMOusers.
@@ -105,23 +110,24 @@ the user and their status is added to VMOusers.
 and status in VMOusers. If the users status is TRUE, which means we want to monitor that users Out of Office status, 
 this will trigger a call to the check_auto_reply function in the checkMSgraph.py module. 
 
-21. The check_auto_reply function in the checkMSgraph.py module will send a GET request to the MS Graph Check AutoReply
-API to determine the users current Automatic Replies Setting. 
+21. The check_auto_reply function in the checkMSgraph.py module will send a GET request to the MS Graph 
+<a href="#get-user-mailbox-settings">GET user mailbox settings API</a>
+to determine the users current Automatic Replies Setting. 
 
     ```bash
     https://graph.microsoft.com/v1.0/users/{user email address}/mailboxSettings/automaticRepliesSetting
     ```
 
-22. The MS Graph Check AutoReply API will respond with the users AutoReply "status" along with the "internalReplyMessage"
-and "externalReplyMessage".
+22. The MS Graph <a href="#get-user-mailbox-settings">GET user mailbox settings API</a> will respond with the users 
+AutoReply "status" along with the "internalReplyMessage" and "externalReplyMessage".
 
     ```bash
     {
         "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('user%40domain.com')/mailboxSettings/automaticRepliesSetting",
         "status": "scheduled",
         "externalAudience": "none",
-        "internalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never Return. </div>\n</body>\n</html>\n",
-        "externalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never Return. </div>\n</body>\n</html>\n",
+        "internalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never return. </div>\n</body>\n</html>\n",
+        "externalReplyMessage": "<html>\n<body>\n<div>Hello I am so glad my vacation is here, I may never return. </div>\n</body>\n</html>\n",
         "scheduledStartDateTime": {
         "dateTime": "2019-04-17T16:00:00.0000000",
         "timeZone": "UTC"
@@ -140,10 +146,12 @@ so no action is taken.
 has made a change to their AutoReplySettings or Out of Office status and we need to take action to alert the 
 vmo-mediator microservice.
 
-25. A POST request will be made to the MEDIATOR POST API to alert the vmo-mediator microservice that a user they have 
-requested be monitored, has made a change to their AutoReplySettings or Out of Office status. The post_mediator function
-in the mediator_post module will sent vmo-mediator the payload shown below. The message will be the externalReplyMessage
-which will later be translated from text to speech and become the users voicemail greeting. 
+25. A POST request will be made to the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR POST API</a> to alert the 
+vmo-mediator microservice that a user they have requested be monitored, has made a change to their AutoReplySettings or 
+Out of Office status. The post_mediator functionin the mediator_post module will sent vmo-mediator the payload shown below. 
+The message will be the externalReplyMessage which will later be translated from text to speech and become the users 
+voicemail greeting. 
 
     ```bash
     profile_payload = {
@@ -194,7 +202,7 @@ Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop
    ```
 
 
-#### Get AD Users
+#### GET users in my organization
 **Description:** This API call will be used to query Active Directory for users.
 
 **Path:** https://graph.microsoft.com/v1.0/users
@@ -232,7 +240,7 @@ Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop
 ```
 
 
-#### Get Mailbox Automatic Reply Setting
+#### GET user mailbox settings
 **Description** This API call will be used to get the mailbox Automatic Reply Setting for a particular user.
 
 **Path:** https://graph.microsoft.com/v1.0/users/{user email address}/mailboxSettings/automaticRepliesSetting
