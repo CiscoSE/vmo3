@@ -87,10 +87,10 @@ which will post the user information to the
 
 13. When the VMO<sup>3</sup> application the 
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> microservice 
-will POST the first user to be monitored to the <a href="#mediator-monitor-api">MEDIATOR MONITOR API</a>. 
+will POST the first user to be monitored to the <a href="#monitor-api">MONITOR API</a>. 
 Once the application is up and running, the 
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> will 
-POST request to the <a href="#mediator-monitor-api">MEDIATOR MONITOR API</a> to monitor new users or make a request to 
+POST request to the <a href="#monitor-api">MONITOR API</a> to monitor new users or make a request to 
 stop monitoring existing users. The POST request will contain the users email address and monitor status.
 
     ```bash
@@ -292,8 +292,10 @@ Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop
 
 
 #### Mediator Sync API
-**Description:** This API call is used to syncronize with the vmo-mediator microservice. 
-**Path:** /
+**Description:** This API call is used to synchronize with the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> microservice. 
+
+**Path:** /api/setup
 
 **Method:** GET
 
@@ -302,9 +304,35 @@ Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop
 **Return:** 200 OK
 
 
+#### Mediator POST API
+**Description:** This API call is used to POST user status and Out of Office message to
+ <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>. 
 
-#### Mediator Monitor API
-**Description:** This API call is used by the vmo-mediator to POST a monitor request. 
+**Path:** /api/setstatus
+
+**Method:** POST
+
+**Parameters:** 
+
+   ```bash
+         profile_payload = {
+             "email": {email address},
+             "status": {autoreply status},
+             "message": {OoO message}
+    }
+   ```
+
+**Return:**
+
+   ```bash
+    {
+    "result": "True"
+    }
+   ```
+
+
+#### Monitor API
+**Description:** This is an outlook-monitor API that is used by the vmo-mediator to POST a monitor request. 
 
 **Path:** /monitor
 
@@ -323,6 +351,8 @@ Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop
    ```bash
    <h1>You would like to monitor user@domain.com True</h1>
    ```
+
+
 
 ## Requirements
 * Azure Active Directory
