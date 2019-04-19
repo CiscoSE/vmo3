@@ -32,7 +32,7 @@ Let's take a look at the work flow. The diagram below is not exhaustive, however
 the components that make up this microservice and their roles. 
 
 
-<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Outlook_monitor_workflow.gif" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Outlook_monitor_workflow.gif"/>
 
 
 1.  This microservice can be executed locally by executing the run.sh bash script and entering your variables at the 
@@ -50,7 +50,7 @@ which is simply a URL, and waits.
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR SYNC API</a> URL will 
 trigger a sync up with the vmo-mediator microservice. 
 
-<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Sync_URL.gif" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/outlook-monitor/images/Sync_URL.gif"/>
 
 5. The mediator_sync.py module is called. 
 
@@ -81,11 +81,15 @@ token available.
 start-up it will not. 
 
     12b. If the process_users function finds users in VMOusers, it will call the post_mediator function in mediator_post.py
-which will post the user information to the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
+which will post the user information to the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
 <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#api-description">MEDIATOR POST API</a> .
 
-13. When the VMO<sup>3</sup> application the vmo-mediator microservice will POST the first user to be monitored to the 
-<a href="#mediator-monitor-api">MEDIATOR MONITOR API</a>. Once the application is up and running, the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> will 
+13. When the VMO<sup>3</sup> application the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> microservice 
+will POST the first user to be monitored to the <a href="#mediator-monitor-api">MEDIATOR MONITOR API</a>. 
+Once the application is up and running, the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> will 
 POST request to the <a href="#mediator-monitor-api">MEDIATOR MONITOR API</a> to monitor new users or make a request to 
 stop monitoring existing users. The POST request will contain the users email address and monitor status.
 
@@ -96,8 +100,9 @@ stop monitoring existing users. The POST request will contain the users email ad
     }
     ```
 
-14. The monitor_users function in main.py checks if there was a POST from <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>. If there was a POST, the data 
-is parsed to extract the users email address and monitor status.
+14. The monitor_users function in main.py checks if there was a POST from 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a>. If there was 
+a POST, the data is parsed to extract the users email address and monitor status.
 
 15. monitor_users then calls the check_activedir_users function in the checkMSgraph.py module.
 
@@ -108,10 +113,12 @@ is parsed to extract the users email address and monitor status.
     https://graph.microsoft.com/v1.0/users
     ```
 
-17. The MS Graph <a href="#get-users-in-my-organization">GET users in my organization API</a> will respond with the users in Active Directory. 
+17. The MS Graph <a href="#get-users-in-my-organization">GET users in my organization API</a> will respond with the 
+users in Active Directory. 
 
 18. The data is send back to the monitor_users function where it is parsed to determine if the email address in the  
-<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> POST exists in Active Directory.
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> POST exists in 
+Active Directory.
 
 19. If the email address exist in Active Directory and the monitor status of the user from vmo-mediator is set to TRUE, 
 the user and their status is added to VMOusers.
