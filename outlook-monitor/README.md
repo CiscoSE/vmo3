@@ -186,8 +186,11 @@ voicemail greeting.
 **Description:** This API call will be used to get an Authorization Token that your application will use to make requests to 
 Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code
 
-**Path:** https://login.microsoftonline.com/{tenantID}/oauth2/token
+**Path:** 
 
+   ```bash
+    https://login.microsoftonline.com/{tenantID}/oauth2/token
+   ```
 **Method:** POST
 
 **Parameters:**
@@ -260,8 +263,10 @@ Microsoft Graph. https://docs.microsoft.com/en-us/azure/active-directory/develop
 #### GET user mailbox settings
 **Description** This API call will be used to get the mailbox Automatic Reply Setting for a particular user.
 
-**Path:** https://graph.microsoft.com/v1.0/users/{user email address}/mailboxSettings/automaticRepliesSetting
-
+**Path:** 
+   ```bash
+   https://graph.microsoft.com/v1.0/users/{user email address}/mailboxSettings/automaticRepliesSetting
+   ```
 **Method:** GET
 
 **Parameters:** 
