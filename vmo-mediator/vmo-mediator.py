@@ -11,6 +11,7 @@ print("VMO3 Mediator Starting...\n")
 print("Configuration Options:")
 
 app = Flask(__name__,static_url_path='/static')
+# NOTE:  This secret_key is very important for the flashing of messages to work with flask!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 # Open up the configuration file and get all application defaults
