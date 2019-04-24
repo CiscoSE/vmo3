@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Exchange Monitor - Main
+VMO3 - Main
 Author: Clint Mann
 
 Description: A Flask application that will create a RESTFul API

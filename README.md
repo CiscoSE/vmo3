@@ -2,7 +2,7 @@
 
 ## Business/Technical Challenge
 Have you ever set up your out of office message in Outlook, but forgot to change voice mail? 
-Or maybe you've returned to the office and forgot to disable that voice mail telling everyone that you are on vacation.
+Or maybe you've returned to the office and forgot to disable that voice mail telling everyone that you are away.
 
 VMO<sup>3</sup> allows users to enable their out of office message once and have it reflected across multiple platforms. 
 
@@ -60,6 +60,7 @@ More detailed information and documentation can be provided in the following lin
 
 * [outlook-monitor](outlook-monitor/README.md)
 * [vmo-mediator](vmo-mediator/README.md)
+* [uc-connector](https://github.com/sloan58/vmo3-uc/blob/master/README.md)
 
 
 ## License
