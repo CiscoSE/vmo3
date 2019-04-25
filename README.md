@@ -13,7 +13,7 @@ Cisco Unified Communication Manager (CUCM). Users can set their OoO alert in ema
 voice mail. They will also receive an Webex Teams message that contains the number of the inbound caller and a separate 
 Webex Teams message that contains the transcription of the message the caller leaves. 
 
-<img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_concept_image.gif" width="800" height="500" />
+<img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_concept_image.gif" />
 
 
 ### Cisco Products Technologies/ Services
@@ -46,7 +46,7 @@ This solution uses:
  - Cisco Webex Teams
  - Amazon Polly for text to speech translation
  
- <img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_architecture.gif" width="800" height="500" />
+ <img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_architecture.gif" />
 
 
 <!-- This does not need to be completed during the initial submission phase  
