@@ -52,26 +52,33 @@ This solution uses:
  
 <img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_architecture.gif" />
 
-<!-- This does not need to be completed during the initial submission phase  
-
-Provide a brief overview of the components involved with this project. e.g Python /  -->
-
 
 ## Usage
 
-As mentioned before the solution is comprised of several components, however, 
-<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> is really the
-module that connects everything together. This interface is what is used to choose which users to start and stop monitoring.
-It also acts as a "bridge" to pass user information gathered from 
+The solution is comprised of three components.
+
+##<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
+This is is a Python Flask microservice that really is the module that connects everything together. 
+It is this interface taht is used to choose which users to 
+start and stop monitoring. It also acts as a "bridge" to pass user information gathered from 
 <a href="https://github.com/clintmann/vmo3/tree/master/outlook-monitor#vmo3-outlook-monitor">outlook-monitor</a> to the
 <a href="https://github.com/sloan58/vmo3-uc/tree/f3960683fe10bcfa4c5f0d814df3a197f397191a#vmo3-uc-connector">uc-connector</a>
 . 
 
-<!-- This does not need to be completed during the initial submission phase  
+##<a href="https://github.com/clintmann/vmo3/tree/master/outlook-monitor#vmo3-outlook-monitor">outlook-monitor</a> 
+This is a Python Flask microservice that listens for 
+the <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
+microservice to specify an Active Directory user to either start or stop monitoring. Outlook-monitor 
+queries Microsoft Graph to determine if a users exists in Microsoft Azure Active Directory and then checks the 
+Office 365 Outlook/Exchange Automatic Replies (Out of Office) status of that user. 
 
-Provide a brief overview of how to use the solution  -->
+##<a href="https://github.com/sloan58/vmo3-uc/tree/f3960683fe10bcfa4c5f0d814df3a197f397191a#vmo3-uc-connector">uc-connector</a>
+This connector is written in PHP and acts as a gateway to trigger UC-specific activities when a user's Out of Office 
+status has changed. It is responsible for the text to speech translation as well as posting incoming call information and
+voice mail message to Webex Teams. 
 
-
+Once all components are up and running, the user will interface exclusively with the 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> dashboard.
 
 ## Installation
 
