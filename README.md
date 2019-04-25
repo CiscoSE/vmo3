@@ -39,19 +39,18 @@ shows, at a high level, what each module interacts with.
 Both <a href="https://github.com/clintmann/vmo3/tree/master/outlook-monitor#vmo3-outlook-monitor">outlook-monitor</a> 
 and <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
 were written in Python and 
-<a href="https://github.com/sloan58/vmo3-uc/tree/f3960683fe10bcfa4c5f0d814df3a197f397191a#vmo3-uc-connector">uc-connector"</a>
+<a href="https://github.com/sloan58/vmo3-uc/tree/f3960683fe10bcfa4c5f0d814df3a197f397191a#vmo3-uc-connector">uc-connector</a>
 was written in PHP. 
 
 This solution uses:
- - The Microsoft Graph development platform
- - An Office 365 mailbox
- - Cisco Unity Connection
- - Cisco Unified Communications Manager
- - Cisco Webex Teams
- - Amazon Polly for text to speech translation
+* The Microsoft Graph development platform
+* An Office 365 mailbox
+* [Cisco Unity Connection (UCXN)](https://www.cisco.com/c/en/us/products/unified-communications/unity-connection/index.html)
+* [Cisco Unified Communications Manager (CUCM)](https://www.cisco.com/c/en/us/products/unified-communications/unified-communications-manager-callmanager/index.html)
+* [Cisco WebEx Teams](https://www.webex.com/products/teams/index.html)
+* Amazon Polly for text to speech translation
  
- <img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_architecture.gif" />
-
+<img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_architecture.gif" />
 
 <!-- This does not need to be completed during the initial submission phase  
 
@@ -59,6 +58,14 @@ Provide a brief overview of the components involved with this project. e.g Pytho
 
 
 ## Usage
+
+As mentioned before the solution is comprised of several components, however, 
+<a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> is really the
+module that connects everything together. This interface is what is used to choose which users to start and stop monitoring.
+It also acts as a "bridge" to pass user information gathered from 
+<a href="https://github.com/clintmann/vmo3/tree/master/outlook-monitor#vmo3-outlook-monitor">outlook-monitor</a> to the
+<a href="https://github.com/sloan58/vmo3-uc/tree/f3960683fe10bcfa4c5f0d814df3a197f397191a#vmo3-uc-connector">uc-connector</a>
+. 
 
 <!-- This does not need to be completed during the initial submission phase  
 
