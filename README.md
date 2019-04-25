@@ -28,7 +28,7 @@ Our solution will leverage the following Cisco technologies
 
 * Chris Bogdon <cbogdon@cisco.com> - Trans PNC
 * Marty Sloan <masloan@cisco.com> - Midwest Atlantic Enterprise
-* Clint Mann <climann2@cisco.com> - PA Liberty Select
+* Clint Mann <climann2@cisco.com> - PA Select - Commercial Accounts
 
 
 ## Solution Components
@@ -36,7 +36,11 @@ Our solution will leverage the following Cisco technologies
 VMO<sup>3</sup> is made up of three microservices. Below is an architectural diagram of the components. The diagram also 
 shows, at a high level, what each module interacts with. 
 
-Both outlook-monitor and vmo-mediator were written in Python and uc-connector was written in PHP. 
+Both <a href="https://github.com/clintmann/vmo3/tree/master/outlook-monitor#vmo3-outlook-monitor">outlook-monitor</a> 
+and <a href="https://github.com/clintmann/vmo3/tree/master/vmo-mediator#vmo3---vmo-mediator">vmo-mediator</a> 
+were written in Python and 
+<a href="https://github.com/sloan58/vmo3-uc/tree/f3960683fe10bcfa4c5f0d814df3a197f397191a#vmo3-uc-connector">uc-connector"</a>
+was written in PHP. 
 
 This solution uses:
  - The Microsoft Graph development platform
