@@ -1,8 +1,8 @@
 # VMO<sup>3
 
 ## Business/Technical Challenge
-Have you ever set up your out of office message in Outlook, but forgot to change voice mail? 
-Or maybe you've returned to the office and forgot to disable that voice mail telling everyone that you are away.
+Have you ever set up your out of office message in Outlook, but forgot to enable your voice mail or change the greeting? 
+Maybe you've returned to the office and forgot to disable that voice mail telling everyone that you are away.
 
 VMO<sup>3</sup> allows users to enable their out of office message once and have it reflected across multiple platforms. 
 
@@ -10,12 +10,10 @@ VMO<sup>3</sup> allows users to enable their out of office message once and have
 
 Our application will integrate O365 Exchange Out of Office alerting with Cisco Unity Connect (UCXN) and 
 Cisco Unified Communication Manager (CUCM). Users can set their OoO alert in email and have it automatically enabled in 
-voice mail. They will also receive a daily listing of inbound calls, so they can see who called while they were 
-out of the office, even if the person did not leave a voice mail. 
+voice mail. They will also receive an Webex Teams message that contains the number of the inbound caller and a separate 
+Webex Teams message that contains the transcription of the message the caller leaves. 
 
-![LOGIC Workflow][logo]
-
-[logo]: https://github.com/clintmann/vmo3/blob/master/images/vmo3_concept_image.gif "Workflow"
+<img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_concept_image.gif" width="800" height="500" />
 
 
 ### Cisco Products Technologies/ Services
@@ -35,6 +33,21 @@ Our solution will leverage the following Cisco technologies
 
 ## Solution Components
 
+VMO<sup>3</sup> is made up of three microservices. Below is an architectural diagram of the components. The diagram also 
+shows, at a high level, what each module interacts with. 
+
+Both outlook-monitor and vmo-mediator were written in Python and uc-connector was written in PHP. 
+
+This solution uses:
+ - The Microsoft Graph development platform
+ - An Office 365 mailbox
+ - Cisco Unity Connection
+ - Cisco Unified Communications Manager
+ - Cisco Webex Teams
+ - Amazon Polly for text to speech translation
+ 
+ <img src= "https://github.com/clintmann/vmo3/blob/master/images/vmo3_architecture.gif" width="800" height="500" />
+
 
 <!-- This does not need to be completed during the initial submission phase  
 
@@ -51,7 +64,8 @@ Provide a brief overview of how to use the solution  -->
 
 ## Installation
 
-Since there are three distinct modules required, the detailed information for installation is included in the documentation links provided in the next section.
+Since there are three distinct modules required, the detailed information for installation is included in the 
+documentation links provided in the next section.
 
 
 ## Documentation
